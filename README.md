@@ -1,3 +1,3 @@
 # my-sqlite
 
-testing pushing
+Mammadu can now push without using ssh
