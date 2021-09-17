@@ -4,10 +4,12 @@ def print_title():
     title = " ".join(["MySQLite version", program_version, program_date])
     print(title)
 
+
 def print_prompt():
     prompt = "my_sqlite_cli>"
     user_input = input(prompt)
     return user_input
+
 
 print_title()
 command = print_prompt()
