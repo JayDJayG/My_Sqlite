@@ -1,8 +1,14 @@
-#Structuring Your Project
-
-https://docs.python-guide.org/writing/structure/?fbclid=IwAR20G3Bylx_B5u3eQxthAL69Mc8FpHIl9JtNI-cWOECx6vAvzPOjAbOmdiE
-
 #Let's Build a Simple Database
 ##Writing a sqlite clone from scratch in C
 
 https://cstack.github.io/db_tutorial/?fbclid=IwAR1ZVxTWB5fitUSNDWMmGZBMw8dJpgYWj3fd7PB5uAS5OQrUb4VJFj4SMNI
+
+
+#Structuring Your Project
+
+https://docs.python-guide.org/writing/structure/?fbclid=IwAR20G3Bylx_B5u3eQxthAL69Mc8FpHIl9JtNI-cWOECx6vAvzPOjAbOmdiE
+
+
+#Python style guide enforcement (like gimli)
+
+https://flake8.pycqa.org/en/latest/
