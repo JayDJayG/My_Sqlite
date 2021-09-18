@@ -2,6 +2,9 @@ class MySqliteRequest:
     #Constructor It will be prototyped:
     query_dictionary = {}
 
+    def __repr__(self):
+        print(f"")
+
     def from_(self, table_name):
         """
         From Implement a from method which must be present on each request.
