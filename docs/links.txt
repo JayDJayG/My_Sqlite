@@ -5,7 +5,6 @@ https://cstack.github.io/db_tutorial/?fbclid=IwAR1ZVxTWB5fitUSNDWMmGZBMw8dJpgYWj
 
 
 #Structuring Your Project
-
 https://docs.python-guide.org/writing/structure/?fbclid=IwAR20G3Bylx_B5u3eQxthAL69Mc8FpHIl9JtNI-cWOECx6vAvzPOjAbOmdiE
 
 
