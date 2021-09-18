@@ -11,8 +11,7 @@ def print_prompt():
     return user_input
 
 def parse_prompt(user_input):
-    if user_input != "quit":
-        print("Error: unknown command or invalid arguments:" + user_input)
+    print("Error: unknown command or invalid arguments:" + user_input)
 
 print_title()
 command = print_prompt()
