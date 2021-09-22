@@ -1,6 +1,10 @@
+import pandas as pd
+
 class MySqliteRequest:
     #Constructor It will be prototyped:
-    def initialize:
+    csv_dictionary = {}
+    data_location = '../data/'
+    #def initialize:
 
     def from_(table_name):
         """
@@ -8,8 +12,11 @@ class MySqliteRequest:
         From will take a parameter and it will be the name of the table.
         (technically a table_name is also a filename (.csv))
         """
+        csv_path = data_location + table_name
+        print (csv_path)
+        df = pd.read_csv(table_name, sep = ',')
 
-    def select([column_name_a, column_name_b])
+    def select(column_name_a, column_name_b):
         """
         Select Implement a where method which will take one argument a string OR an array of string.
         It will continue to build the request. During the run()
@@ -22,7 +29,7 @@ class MySqliteRequest:
         It will be prototyped:
         """
 
-    def join(column_on_db_a, filename_db_b, column_on_db_b)
+    def join(column_on_db_a, filename_db_b, column_on_db_b):
         """
         Join Implement a join method which will load another filename_db 
         and will join both database on a on column.
@@ -51,7 +58,7 @@ class MySqliteRequest:
         Update Implement a method to update which will receive a table name (filename).
         It will continue to build the request. An update request might be associated with a where request
         """
-    def set(data):
+    def set_(data):
         """
         Set Implement a method to update which will receive data
         (a hash of data on format (key => value)). 
@@ -59,14 +66,14 @@ class MySqliteRequest:
         An update request might be associated with a where request.
         """
 
-    def delete:
+    def delete():
         """
         Delete Implement a delete method. 
         It set the request to delete on all matching row. 
         It will continue to build the request. 
         An delete request might be associated with a where request.
         """
-    def run:
+    def run():
         """
         Run method will execute the request.
-        """"
+        """
