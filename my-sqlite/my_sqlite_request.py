@@ -2,9 +2,10 @@ import pandas as pd
 
 class MySqliteRequest:
     #Constructor It will be prototyped:
+    #def __init__(self):
+    heads = []
     query_dictionary = {}
     data_location = '../data/'
-    #def initialize:
 
     def __repr__(self):
         print(f"current state of query is {self.query_dictionary}")
@@ -12,13 +13,16 @@ class MySqliteRequest:
 
     def from_(self, table_name):
         """
-        From Implement a from method which must be present on each request.
-        From will take a parameter and it will be the name of the table.
-        (technically a table_name is also a filename (.csv))
+        from_ implements a SQL FROM method that must be present on each request.
+        from_ will take a parameter (table_name) and it will be the name of the --csv-- table.
         """
         csv_path = self.data_location + table_name
         df = pd.read_csv(csv_path, sep = ',')
-        print(df)
+        tuples = [tuple(x) for x in df.values]
+        head = df.head()
+        for row in head:
+            self.heads.append(row.split(","))
+        print(self.heads)
 
     def select(self, column_name_a, column_name_b):
         """
