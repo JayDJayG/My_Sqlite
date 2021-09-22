@@ -1,4 +1,5 @@
-import my_sqlite_request
+from my_sqlite_request import MySqliteRequest
+
 
 
 def print_title():
@@ -14,10 +15,12 @@ def print_prompt():
     return user_input
 
 def parse_prompt(user_input):
+    tokens = user_input.split()
+    print(tokens)
     print("Error: unknown command or invalid arguments:" + user_input)
 
 print_title()
-command = print_prompt()
-while (command != "quit"):
-    parse_prompt(command)
-    command = print_prompt()
+user_input = print_prompt()
+while (user_input != "quit"):
+    parse_prompt(user_input)
+    user_input = print_prompt()
