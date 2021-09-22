@@ -3,7 +3,8 @@ class MySqliteRequest:
     query_dictionary = {}
 
     def __repr__(self):
-        print(f"")
+        print(f"current state of query is {self.query_dictionary}")
+        return "end of query"
 
     def from_(self, table_name):
         """
@@ -12,7 +13,7 @@ class MySqliteRequest:
         (technically a table_name is also a filename (.csv))
         """
 
-    def select(self, [column_name_a, column_name_b])
+    def select(self, column_name_a, column_name_b):
         """
         Select Implement a where method which will take one argument a string OR an array of string.
         It will continue to build the request. During the run()
@@ -26,7 +27,7 @@ class MySqliteRequest:
          During the run() you will filter the result which match the value.
         """
 
-    def join(self, column_on_db_a, filename_db_b, column_on_db_b)
+    def join(self, column_on_db_a, filename_db_b, column_on_db_b):
         """
         Join Implement a join method which will load another filename_db 
         and will join both database on a on column.
@@ -72,6 +73,4 @@ class MySqliteRequest:
         An delete request might be associated with a where request.
         """
     def run(self):
-        """
-        Run method will execute the request.
-        """"
+        print("HELLO")
