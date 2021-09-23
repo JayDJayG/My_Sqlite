@@ -5,6 +5,7 @@ class MySqliteRequest:
     #def __init__(self):
     heads = []
     query_dictionary = {}
+    query_dictionary_obj = {}
     data_location = '../data/'
 
     def __repr__(self):
@@ -12,16 +13,20 @@ class MySqliteRequest:
         return
 
     def from_(self, table_name):
-        """
-        from_ implements a SQL FROM method that must be present on each request.
-        from_ will take a parameter (table_name) and it will be the name of the --csv-- table.
-        """
         csv_path = self.data_location + table_name
+        """
+        from_ implements the sql FROM command, each request must have one.
+        from_ will take a string(table_name) this is the name of the csv file to query.
+        """
         df = pd.read_csv(csv_path, sep = ',')
         tuples = [tuple(x) for x in df.values]
         head = df.head()
-        for row in head:
-            self.heads.append(row.split(","))
+
+        for column in head:
+            self.query_dictionary_obj[column] = ""
+            self.heads.append(column)
+
+        print(self.query_dictionary_obj)
         print(self.heads)
 
     def select(self, column_name_a, column_name_b):
