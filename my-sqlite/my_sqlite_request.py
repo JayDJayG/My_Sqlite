@@ -1,33 +1,31 @@
 import pandas as pd
 
 class MySqliteRequest:
-    #Constructor It will be prototyped:
-    #def __init__(self):
-    heads = []
-    query_dictionary = {}
-    query_dictionary_obj = {}
-    data_location = '../data/'
+
+    def __init__(self):
+        self.query_dictionary = {}
+        self.data_location = '../data/'
 
     def __repr__(self):
         print(f"current state of query is {self.query_dictionary}")
         return
 
     def from_(self, table_name):
-        csv_path = self.data_location + table_name
         """
         from_ implements the sql FROM command, each request must have one.
         from_ will take a string(table_name) this is the name of the csv file to query.
         """
+        csv_path = self.data_location + table_name
         df = pd.read_csv(csv_path, sep = ',')
         tuples = [tuple(x) for x in df.values]
-        head = df.head()
-
-        for column in head:
-            self.query_dictionary_obj[column] = ""
-            self.heads.append(column)
-
-        print(self.query_dictionary_obj)
-        print(self.heads)
+        columns = list(df.columns)
+        
+        for idx, val in enumerate(tuples):
+            self.query_dictionary[idx] = {}
+            for jdx, value in enumerate(val):
+                self.query_dictionary[idx][columns[jdx]] = value
+        
+        print(self.query_dictionary)
 
     def select(self, column_name_a, column_name_b):
         """
