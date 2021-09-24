@@ -1,10 +1,14 @@
 import pandas as pd
+from os.path import exists
 
 class MySqliteRequest:
 
     def __init__(self):
+        self.run_dictionary = {}
         self.query_dictionary = {}
         self.data_location = '../data/'
+        self.from_usage = False
+        self.from_message = "Please use from_ method before any other command"
 
     def __repr__(self):
         print(f"current state of query is {self.query_dictionary}")
@@ -16,22 +20,25 @@ class MySqliteRequest:
         from_ will take a string(table_name) this is the name of the csv file to query.
         """
         csv_path = self.data_location + table_name
-        df = pd.read_csv(csv_path, sep = ',')
-        tuples = [tuple(x) for x in df.values]
-        columns = list(df.columns)
-        
-        for idx, val in enumerate(tuples):
-            self.query_dictionary[idx] = {}
-            for jdx, value in enumerate(val):
-                self.query_dictionary[idx][columns[jdx]] = value
-        
-        print(self.query_dictionary)
+        if (exists(csv_path)):
+            df = pd.read_csv(csv_path, sep = ',')
+            tuples = [tuple(x) for x in df.values]
+            columns = list(df.columns)
 
-    def select(self, column_name_a, column_name_b):
+            for idx, val in enumerate(tuples):
+                self.query_dictionary[idx] = {}
+                for jdx, value in enumerate(val):
+                    self.query_dictionary[idx][columns[jdx]] = value
+        
+            self.from_usage = True
+            return self.query_dictionary
+        else:
+            print("File path does not exist, introduce correct path")
+
+    def select(self, string_s):
         """
-        Select Implement a where method which will take one argument a string OR an array of string.
+        select implements the sql SELECT command. Parameter: a string OR an array of strings.
         It will continue to build the request. During the run()
-        you will collect on the result only the columns sent as parameters to select :-).
         """
 
     def where(self, column_name, criteria):
