@@ -39,9 +39,11 @@ class MySqliteRequest:
 
     def select_(self, string_s):
         """
-        select implements the sql SELECT command. Parameter: a string OR an array of strings.
+        The select_ method implements the sql SELECT command. 
+        It takes as the parameter a string OR an array of strings.
         It will continue to build the request. During the run()
         """
+        ########ATTENTION#############
         ###Required LOGIC
         #if type(string_s) == String then turn into list
         column_bool = True
@@ -54,23 +56,25 @@ class MySqliteRequest:
                 self.run_dictionary[idx] = {}
                 for column in string_s:
                     self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
-            
-            print(self.run_dictionary)
         else:
             print (self.from_message)
 
 
     def where_(self, column_name, criteria):
         """
-        Where Implement a where method which will take 2 arguments: column_name and value.
-         It will continue to build the request.
-         During the run() you will filter the result which match the value.
+        The where_ method takes two arguments. column_name targets the column and
+        criteria the condition to actuate by filtering the entries within run_dictionary.
         """
+        #We need to check the Qwasar requirements more in dept to complete this function
+        if self.from_usage == True and column_name in self.columns:
+            print ("HELLO Where")
+        else:
+            print (self.from_message)
 
     def join_(self, column_on_db_a, filename_db_b, column_on_db_b):
         """
-        Join Implement a join method which will load another filename_db 
-        and will join both database on a on column.
+        The join_ method loads another filename_db
+        and will join both database on an on column.
         """
 
     def order_(self, order, column_name):
