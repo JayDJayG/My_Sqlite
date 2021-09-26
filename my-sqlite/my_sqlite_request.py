@@ -4,11 +4,13 @@ from os.path import exists
 class MySqliteRequest:
 
     def __init__(self):
+        self.columns = []
         self.run_dictionary = {}
         self.query_dictionary = {}
         self.data_location = '../data/'
         self.from_usage = False
         self.from_message = "Please use from_ method before any other command"
+        self.path_message = "File path does not exist, introduce correct path"
 
     def __repr__(self):
         print(f"current state of query is {self.query_dictionary}")
@@ -23,56 +25,73 @@ class MySqliteRequest:
         if (exists(csv_path)):
             df = pd.read_csv(csv_path, sep = ',')
             tuples = [tuple(x) for x in df.values]
-            columns = list(df.columns)
+            self.columns = list(df.columns)
 
             for idx, val in enumerate(tuples):
                 self.query_dictionary[idx] = {}
                 for jdx, value in enumerate(val):
-                    self.query_dictionary[idx][columns[jdx]] = value
+                    self.query_dictionary[idx][self.columns[jdx]] = value
         
             self.from_usage = True
             return self.query_dictionary
         else:
-            print("File path does not exist, introduce correct path")
+            print(self.path_message)
 
-    def select(self, string_s):
+    def select_(self, string_s):
         """
         select implements the sql SELECT command. Parameter: a string OR an array of strings.
         It will continue to build the request. During the run()
         """
+        ###Required LOGIC
+        #if type(string_s) == String then turn into list
+        column_bool = True
+        for column in string_s:
+            if column not in self.columns:
+                column_bool = False
 
-    def where(self, column_name, criteria):
+        if self.from_usage == True and column_bool:
+            for idx in self.query_dictionary:
+                self.run_dictionary[idx] = {}
+                for column in string_s:
+                    self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
+            
+            print(self.run_dictionary)
+        else:
+            print (self.from_message)
+
+
+    def where_(self, column_name, criteria):
         """
         Where Implement a where method which will take 2 arguments: column_name and value.
          It will continue to build the request.
          During the run() you will filter the result which match the value.
         """
 
-    def join(self, column_on_db_a, filename_db_b, column_on_db_b):
+    def join_(self, column_on_db_a, filename_db_b, column_on_db_b):
         """
         Join Implement a join method which will load another filename_db 
         and will join both database on a on column.
         """
 
-    def order(self, order, column_name):
+    def order_(self, order, column_name):
         """
         Order Implement an order method which will received two parameters, 
         order (:asc or :desc) and column_name. 
         It will sort depending on the order base on the column_name.
         """
 
-    def insert(self, table_name):
+    def insert_(self, table_name):
         """
         Insert Implement a method to insert which will receive a table name (filename).
         It will continue to build the request.
         """
-    def values(self, data):
+    def values_(self, data):
         """
         Values Implement a method to values which will receive data.
         (a hash of data on format (key => value)).
         It will continue to build the request. During the run() you do the insert.
         """
-    def update(self, table_name):
+    def update_(self, table_name):
         """
         Update Implement a method to update which will receive a table name (filename).
         It will continue to build the request.
@@ -86,12 +105,12 @@ class MySqliteRequest:
         An update request might be associated with a where request.
         """
 
-    def delete(self):
+    def delete_(self):
         """
         Delete Implement a delete method. 
         It set the request to delete on all matching row. 
         It will continue to build the request. 
         An delete request might be associated with a where request.
         """
-    def run(self):
+    def run_(self):
         print("HELLO")

@@ -11,4 +11,7 @@ test_class = MySqliteRequest()
 #testing from
 test_class.from_(nba_player_data)
 
-print(test_class.query_dictionary[1]["year_start"])
+#Testing select_ command
+test_class.select_(["birth_date", "name"])
+
+# Desired output -> 1 : {name: "Mammadu"}
