@@ -43,19 +43,23 @@ class MySqliteRequest:
         It takes as the parameter a string OR an array of strings.
         It will continue to build the request. During the run()
         """
-        ########ATTENTION#############
-        ###Required LOGIC
-        #if type(string_s) == String then turn into list
-        column_bool = True
-        for column in string_s:
-            if column not in self.columns:
-                column_bool = False
+        if self.from_usage:
+            if not isinstance(string_s, list):
+                s = string_s
+                string_s = list()
+                string_s.append(s)
 
-        if self.from_usage == True and column_bool:
-            for idx in self.query_dictionary:
-                self.run_dictionary[idx] = {}
-                for column in string_s:
-                    self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
+            column_bool = True
+            for column in string_s:
+                if column not in self.columns:
+                    column_bool = False
+
+            if self.from_usage == True and column_bool:
+                for idx in self.query_dictionary:
+                    self.run_dictionary[idx] = {}
+                    for column in string_s:
+                        self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
+            print(self.run_dictionary)
         else:
             print (self.from_message)
 
@@ -65,7 +69,6 @@ class MySqliteRequest:
         The where_ method takes two arguments. column_name targets the column and
         criteria the condition to actuate by filtering the entries within run_dictionary.
         """
-        #We need to check the Qwasar requirements more in dept to complete this function
         if self.from_usage == True and column_name in self.columns:
             print ("HELLO Where")
         else:
