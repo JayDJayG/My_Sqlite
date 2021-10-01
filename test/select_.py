@@ -12,6 +12,6 @@ test_class = MySqliteRequest()
 test_class.from_(nba_player_data)
 
 #Testing select_ command
-test_class.select_(["birth_date", "name"])
+test_class.select_("name")
 
 # Desired output -> 1 : {name: "Mammadu"}
