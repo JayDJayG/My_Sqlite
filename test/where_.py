@@ -13,5 +13,9 @@ test_class.from_(nba_player_data)
 
 #Testing select_ command
 test_class.select_(["birth_date", "name"])
+test_class.where_("name", "Jim Zoet")
+test_class.where_("birth_date", "December 20, 1953")
+
+
 
 # Desired output -> 1 : {name: "Mammadu"}

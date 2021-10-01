@@ -59,10 +59,9 @@ class MySqliteRequest:
                     self.run_dictionary[idx] = {}
                     for column in string_s:
                         self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
-            print(self.run_dictionary)
+
         else:
             print (self.from_message)
-
 
     def where_(self, column_name, criteria):
         """
@@ -70,7 +69,9 @@ class MySqliteRequest:
         criteria the condition to actuate by filtering the entries within run_dictionary.
         """
         if self.from_usage == True and column_name in self.columns:
-            print ("HELLO Where")
+            for entry in self.run_dictionary:
+                if self.run_dictionary[entry] and criteria not in self.run_dictionary[entry][column_name]:
+                    self.run_dictionary[entry] = None
         else:
             print (self.from_message)
 
