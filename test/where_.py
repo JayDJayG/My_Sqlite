@@ -9,12 +9,16 @@ nba_player = "nba_player.csv"
 test_class = MySqliteRequest()
 
 #testing from
-test_class.from_(nba_player_data)
+test_class.__from__(nba_player_data)
 
 #Testing select_ command
-test_class.select_(["birth_date", "name"])
-test_class.where_("name", "Jim Zoet")
-test_class.where_("birth_date", "December 20, 1953")
+test_class.__select__(["birth_date", "name"])
+
+print(test_class)
+
+
+test_class.__where__("name", "Jim Zoet")
+test_class.__where__("birth_date", "December 20, 1953")
 
 
 

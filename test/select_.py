@@ -9,9 +9,11 @@ nba_player = "nba_player.csv"
 test_class = MySqliteRequest()
 
 #testing from
-test_class.from_(nba_player_data)
+test_class.__from__(nba_player_data)
 
 #Testing select_ command
-test_class.select_("name")
+test_class.__select__("name")
+
+test_class.__repr__()
 
 # Desired output -> 1 : {name: "Mammadu"}

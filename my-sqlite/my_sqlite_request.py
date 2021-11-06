@@ -59,7 +59,6 @@ class MySqliteRequest:
                     self.run_dictionary[idx] = {}
                     for column in string_s:
                         self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
-
         else:
             print (self.from_message)
 
