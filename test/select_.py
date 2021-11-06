@@ -12,7 +12,7 @@ test_class = MySqliteRequest()
 test_class.__from__(nba_player_data)
 
 #Testing select_ command
-test_class.__select__("name")
+test_class.__select__("year_start")
 
 test_class.__repr__()
 

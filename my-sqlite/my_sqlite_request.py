@@ -13,7 +13,7 @@ class MySqliteRequest:
         self.path_message = "File path does not exist, introduce correct path"
 
     def __repr__(self):
-        print(f"current state of query is {self.query_dictionary}")
+        print(f"current state of query is {self.run_dictionary}")
         return
 
     def __from__(self, table_name):
@@ -44,16 +44,17 @@ class MySqliteRequest:
         It will continue to build the request. During the run()
         """
         if self.from_usage:
+            
             if not isinstance(string_s, list):
                 s = string_s
                 string_s = list()
                 string_s.append(s)
-
+            
             column_bool = True
             for column in string_s:
                 if column not in self.columns:
                     column_bool = False
-
+            print("hola")
             if self.from_usage == True and column_bool:
                 for idx in self.query_dictionary:
                     self.run_dictionary[idx] = {}
