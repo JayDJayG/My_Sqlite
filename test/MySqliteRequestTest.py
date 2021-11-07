@@ -1,10 +1,4 @@
 import sys
-<<<<<<< HEAD
-sys.path.insert(0, '../my-sqlite/')
-from my_sqlite_request import MySqliteRequest
-
-test_class = MySqliteRequest()
-=======
 sys.path.insert(0, '../my-sqlite')
 from my_sqlite_request import MySqliteRequest
 
@@ -16,5 +10,4 @@ nba_player = "nba_player.csv"
 test_class = MySqliteRequest()
 
 #prints generic output of MySqLiteRequest class
->>>>>>> temH
 print(test_class)

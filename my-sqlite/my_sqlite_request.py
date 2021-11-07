@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 from os.path import exists
 
 class MySqliteRequest:
@@ -21,9 +22,11 @@ class MySqliteRequest:
         from_ implements the sql FROM command, each request must have one.
         from_ will take a string(table_name) this is the name of the csv file to query.
         """
-        csv_path = self.data_location + table_name
-        if (exists(csv_path)):
+        csv_path = self.data_location + table_name #create path
+        if (exists(csv_path)): #check file existence
             df = pd.read_csv(csv_path, sep = ',')
+            df = df.fillna("null")
+            df = df.astype(str)
             tuples = [tuple(x) for x in df.values]
             self.columns = list(df.columns)
 
@@ -45,16 +48,15 @@ class MySqliteRequest:
         """
         if self.from_usage:
             
-            if not isinstance(string_s, list):
+            if not isinstance(string_s, list): #convert string to list
                 s = string_s
                 string_s = list()
                 string_s.append(s)
-            
+
             column_bool = True
             for column in string_s:
                 if column not in self.columns:
                     column_bool = False
-            print("hola")
             if self.from_usage == True and column_bool:
                 for idx in self.query_dictionary:
                     self.run_dictionary[idx] = {}
@@ -70,7 +72,9 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.run_dictionary:
-                if self.run_dictionary[entry] and criteria not in self.run_dictionary[entry][column_name]:
+                # print(entry) #debug
+                # print(self.run_dictionary[entry]) #debug
+                if self.run_dictionary[entry] and criteria != self.run_dictionary[entry][column_name]:
                     self.run_dictionary[entry] = None
         else:
             print (self.from_message)
