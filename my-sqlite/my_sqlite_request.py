@@ -2,8 +2,10 @@ import pandas as pd
 import math
 from os.path import exists
 
-class MySqliteRequest:
+from pandas.core.base import SelectionMixin
 
+
+class MySqliteRequest:
     def __init__(self):
         self.columns = []
         self.run_dictionary = {}
@@ -22,9 +24,9 @@ class MySqliteRequest:
         from_ implements the sql FROM command, each request must have one.
         from_ will take a string(table_name) this is the name of the csv file to query.
         """
-        csv_path = self.data_location + table_name #create path
-        if (exists(csv_path)): #check file existence
-            df = pd.read_csv(csv_path, sep = ',')
+        csv_path = self.data_location + table_name  #create path
+        if (exists(csv_path)):  #check file existence
+            df = pd.read_csv(csv_path, sep=',')
             df = df.fillna("null")
             df = df.astype(str)
             tuples = [tuple(x) for x in df.values]
@@ -34,7 +36,7 @@ class MySqliteRequest:
                 self.query_dictionary[idx] = {}
                 for jdx, value in enumerate(val):
                     self.query_dictionary[idx][self.columns[jdx]] = value
-        
+
             self.from_usage = True
             return self.query_dictionary
         else:
@@ -47,8 +49,8 @@ class MySqliteRequest:
         It will continue to build the request. During the run()
         """
         if self.from_usage:
-            
-            if not isinstance(string_s, list): #convert string to list
+
+            if not isinstance(string_s, list):  #convert string to list
                 s = string_s
                 string_s = list()
                 string_s.append(s)
@@ -61,9 +63,10 @@ class MySqliteRequest:
                 for idx in self.query_dictionary:
                     self.run_dictionary[idx] = {}
                     for column in string_s:
-                        self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
+                        self.run_dictionary[idx][
+                            column] = self.query_dictionary[idx][column]
         else:
-            print (self.from_message)
+            print(self.from_message)
 
     def __where__(self, column_name, criteria):
         """
@@ -74,10 +77,12 @@ class MySqliteRequest:
             for entry in self.run_dictionary:
                 # print(entry) #debug
                 # print(self.run_dictionary[entry]) #debug
-                if self.run_dictionary[entry] and criteria != self.run_dictionary[entry][column_name]:
+                if self.run_dictionary[
+                        entry] and criteria != self.run_dictionary[entry][
+                            column_name]:
                     self.run_dictionary[entry] = None
         else:
-            print (self.from_message)
+            print(self.from_message)
 
     def __join__(self, other, column_on_db_a, filename_db_b, column_on_db_b):
         """
@@ -97,18 +102,21 @@ class MySqliteRequest:
         Insert Implement a method to insert which will receive a table name (filename).
         It will continue to build the request.
         """
+
     def __values__(self, data):
         """
         Values Implement a method to values which will receive data.
         (a hash of data on format (key => value)).
         It will continue to build the request. During the run() you do the insert.
         """
+
     def __update__(self, table_name):
         """
         Update Implement a method to update which will receive a table name (filename).
         It will continue to build the request.
         An update request might be associated with a where request
         """
+
     def __set__(self, data):
         """
         Set Implement a method to update which will receive data
@@ -124,5 +132,17 @@ class MySqliteRequest:
         It will continue to build the request. 
         An delete request might be associated with a where request.
         """
+
     def __run__(self):
-        print("HELLO")
+        for idx in self.run_dictionary:
+            row = ""
+            if self.run_dictionary[idx]:
+                for column_value in self.run_dictionary[idx]:
+                    row += self.run_dictionary[idx][column_value] + " "
+                print(row)
+
+    def run(self):
+        return self.__run__()
+
+    def fr0m(self, table_name):
+        return self.__from__(table_name)
