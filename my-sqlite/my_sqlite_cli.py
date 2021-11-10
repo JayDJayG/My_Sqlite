@@ -1,6 +1,20 @@
 from my_sqlite_request import MySqliteRequest
 
+valid_commands = [
+    'from',
+    'select',
+    'where',
+    'join',
+    'order',
+    'insert',
+    'values',
+    'update',
+    'set',
+    'delete'
+    ]
 
+command_list = []
+command_dictionary = {}
 
 def print_title():
     program_version = "0.1"
@@ -17,7 +31,14 @@ def print_prompt():
 def parse_prompt(user_input):
     tokens = user_input.split()
     print(tokens)
-    print("Error: unknown command or invalid arguments:" + user_input)
+    for i in range(0, len(tokens)):
+        if tokens[i] in valid_commands:
+            command_list.append(tokens[i])
+        elif (len(command_list) > 0):
+            command_list[-1].append(token[i])
+        else:
+            print("Error: unknown command or invalid arguments: " + user_input)
+        print(command_list)
 
 print_title()
 user_input = print_prompt()
