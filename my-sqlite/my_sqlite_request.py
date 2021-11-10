@@ -1,13 +1,14 @@
 import pandas as pd
 import math
 from os.path import exists
-
+import random
 from pandas.core.base import SelectionMixin
 
 
 class MySqliteRequest:
     def __init__(self):
         self.columns = []
+        self.columns_extracted = []
         self.run_dictionary = {}
         self.query_dictionary = {}
         self.data_location = '../data/'
@@ -96,6 +97,17 @@ class MySqliteRequest:
         order (:asc or :desc) and column_name. 
         It will sort depending on the order base on the column_name.
         """
+        oP = ["asc", "desc"]
+        if self.from_usage == True and column_name in self.columns and order in oP:
+            df = pd.DataFrame.from_dict(self.run_dictionary, orient='index').T
+            print(self.column_extractor())
+        #next step to is self.column_extractor() to finish query
+        #print(df)
+        else:
+            print(self.from_message)
+
+    def order(self, order, column_name):
+        return self.__order__(order, column_name)
 
     def __insert__(self, table_name):
         """
@@ -134,12 +146,21 @@ class MySqliteRequest:
         """
 
     def __run__(self):
+
         for idx in self.run_dictionary:
             row = ""
             if self.run_dictionary[idx]:
                 for column_value in self.run_dictionary[idx]:
                     row += self.run_dictionary[idx][column_value] + " "
                 print(row)
+
+    def column_extractor(self):
+
+        choice = random.choice(list(self.run_dictionary.values()))
+        li = []
+        for key in choice:
+            li.append(key)
+        return li
 
     def run(self):
         return self.__run__()
