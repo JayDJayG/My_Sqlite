@@ -98,11 +98,23 @@ class MySqliteRequest:
         It will sort depending on the order base on the column_name.
         """
         oP = ["asc", "desc"]
-        if self.from_usage == True and column_name in self.columns and order in oP:
-            df = pd.DataFrame.from_dict(self.run_dictionary, orient='index').T
+        if self.from_usage and column_name in self.columns and order in oP:
+            index = self.columns.index(column_name)
+
+            if order in "asc":
+                print("ASCENDANT for sure")
+                d = dict(
+                    sorted(self.query_dictionary.items(),
+                           key=lambda item: item[index]))
+            else:
+                d = dict(
+                    sorted(self.query_dictionary.items(),
+                           key=lambda item: item[index]))
+
+            #print(sorted_df)
             print(self.column_extractor())
         #next step to is self.column_extractor() to finish query
-        #print(df)
+
         else:
             print(self.from_message)
 
