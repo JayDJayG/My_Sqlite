@@ -97,24 +97,23 @@ class MySqliteRequest:
         order (:asc or :desc) and column_name. 
         It will sort depending on the order base on the column_name.
         """
+        temp_d = {}
+        tup = []
         oP = ["asc", "desc"]
         if self.from_usage and column_name in self.columns and order in oP:
-            index = self.columns.index(column_name)
+
+            for key, val in self.query_dictionary.items():
+                tup.append((key, val[column_name]))
 
             if order in "asc":
-                print("ASCENDANT for sure")
-                d = dict(
-                    sorted(self.query_dictionary.items(),
-                           key=lambda item: item[index]))
+                temp = sorted(tup, reverse=False, key=lambda x: x[1])
             else:
-                d = dict(
-                    sorted(self.query_dictionary.items(),
-                           key=lambda item: item[index]))
+                temp = sorted(tup, reverse=True, key=lambda x: x[1])
 
-            #print(sorted_df)
-            print(self.column_extractor())
-        #next step to is self.column_extractor() to finish query
+            for idx, val in enumerate(temp):
+                temp_d[idx] = self.run_dictionary[val[0]]
 
+            self.run_dictionary = temp_d
         else:
             print(self.from_message)
 
