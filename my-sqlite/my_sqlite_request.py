@@ -76,11 +76,7 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.run_dictionary:
-                # print(entry) #debug
-                # print(self.run_dictionary[entry]) #debug
-                if self.run_dictionary[
-                        entry] and criteria != self.run_dictionary[entry][
-                            column_name]:
+                if self.run_dictionary[entry] and criteria != self.run_dictionary[entry][column_name]:
                     self.run_dictionary[entry] = None
         else:
             print(self.from_message)
@@ -140,6 +136,9 @@ class MySqliteRequest:
         It will continue to build the request.
         An update request might be associated with a where request
         """
+        self.__from__(table_name)
+        #update the query dictionary with the proper database
+
 
     def __set__(self, data):
         """
@@ -148,6 +147,22 @@ class MySqliteRequest:
         It will perform the update of attributes on all matching row.
         An update request might be associated with a where request.
         """
+        #update the run dictionary based on keys and values. 
+        # The key is the column name, and the value is what the column value will be
+        # afterwards, update the query dictionary with new values from the run dictionary
+
+        # data should be a dictionary
+        print(data.list())
+        # for key in data.keys():
+            
+            
+
+
+        #for any update block, the logic is as follows:
+        # UPDATE
+        # WHERE (as necessary)
+        # SET
+
 
     def __delete__(self):
         """
