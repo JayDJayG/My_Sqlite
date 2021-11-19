@@ -152,9 +152,14 @@ class MySqliteRequest:
         # afterwards, update the query dictionary with new values from the run dictionary
 
         # data should be a dictionary
-        print(data.list())
-        # for key in data.keys():
-            
+        # print(data.list())
+        for key in data.keys():
+            # print(key)
+            # print(data[key])
+            for idx in self.run_dictionary:
+                self.run_dictionary[idx][key] = data[key]
+
+        #how does one update the query dictionary after updating the run dictionary
             
 
 
