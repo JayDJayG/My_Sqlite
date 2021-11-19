@@ -16,9 +16,9 @@ test_class.fr0m(nba_player_data)
 test_class.__select__(["name", "year_start", "position"])
 
 # print(test_class)
-test_class.order('asc', 'name')
+test_class.order('asc', 'position')
 test_class.column_extractor()
-#test_class.run()
+test_class.run()
 #test_class.__repr__()
 
 # Desired output -> 1 : {name: "Mammadu"}
