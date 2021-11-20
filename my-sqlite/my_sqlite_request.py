@@ -1,5 +1,4 @@
 import pandas as pd
-import math
 from os.path import exists
 import random
 from pandas.core.base import SelectionMixin
@@ -76,8 +75,6 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.run_dictionary:
-                # print(entry) #debug
-                # print(self.run_dictionary[entry]) #debug
                 if self.run_dictionary[
                         entry] and criteria != self.run_dictionary[entry][
                             column_name]:
@@ -90,6 +87,14 @@ class MySqliteRequest:
         The join_ method loads another filename_db
         and will join both database on an on column.
         """
+        db_B = MySqliteRequest()
+        db_B.fr0m(filename_db_b)
+        s_db_A = set(self.column_list_extractor(column_on_db_a))
+        s_db_B = set(db_B.column_list_extractor(column_on_db_b))
+        if (s_db_A and s_db_B):
+            print("Join Possible")
+        else:
+            return "Join no possible"
 
     def __order__(self, order, column_name):
         """
@@ -116,9 +121,6 @@ class MySqliteRequest:
             self.run_dictionary = temp_d
         else:
             print(self.from_message)
-
-    def order(self, order, column_name):
-        return self.__order__(order, column_name)
 
     def __insert__(self, table_name):
         """
@@ -173,8 +175,20 @@ class MySqliteRequest:
             li.append(key)
         return li
 
+    def column_list_extractor(self, column_on_db):
+        li = []
+        for idx, val in enumerate(self.query_dictionary):
+            li.append(self.query_dictionary[idx][column_on_db])
+        return li
+
     def run(self):
         return self.__run__()
 
     def fr0m(self, table_name):
         return self.__from__(table_name)
+
+    def order(self, order, column_name):
+        return self.__order__(order, column_name)
+
+    def join(self, other, column_on_db_a, filename_db_b, column_on_db_b):
+        return self.__join__(column_on_db_a, filename_db_b, column_on_db_b)

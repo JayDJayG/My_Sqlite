@@ -1,3 +1,4 @@
+from os import name
 import sys
 
 sys.path.insert(0, '../my-sqlite')
@@ -15,11 +16,10 @@ test_class.fr0m(nba_player_data)
 #Testing select_ command
 test_class.__select__(["name", "year_start", "position"])
 
-#print(test_class)
+li = test_class.column_list_extractor("name")
+print(li)
 
-test_class.order('asc', 'position')
-test_class.column_extractor()
-test_class.run()
+#test_class.run()
 #test_class.__repr__()
 
 # Desired output -> 1 : {name: "Mammadu"}
