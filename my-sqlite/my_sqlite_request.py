@@ -10,6 +10,7 @@ class MySqliteRequest:
         self.columns_extracted = []
         self.run_dictionary = {}
         self.query_dictionary = {}
+        # self.join_dictionary = {}
         self.data_location = '../data/'
         self.from_usage = False
         self.from_message = "Please use from_ method before any other command"
@@ -95,6 +96,14 @@ class MySqliteRequest:
             print("Join Possible")
         else:
             return "Join no possible"
+        #...do we need to establish primary keys/foreign keys
+        #load both tables
+        # self.table
+        # other.__from__(table)
+        #do select on tables to have specific columns listed
+        #   table A [column a, b c]
+        #   table B [column d e]
+        #   table C[column a, b, e]
 
     def __order__(self, order, column_name):
         """
