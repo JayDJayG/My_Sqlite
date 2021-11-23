@@ -90,15 +90,17 @@ class MySqliteRequest:
         """
         db_B = MySqliteRequest()
         db_B.fr0m(filename_db_b)
-        s_db_A = set(self.column_list_extractor(column_on_db_a))
-        s_db_B = set(db_B.column_list_extractor(column_on_db_b))
-        print(s_db_B)
-        """
-        if (s_db_A and s_db_B):
+        li_A = self.column_list_extractor(column_on_db_a)
+        li_B = db_B.column_list_extractor(column_on_db_b)
+        s_db_A = set(li_A)
+        s_db_B = set(li_B)
+
+        if (len(s_db_A) == len(li_A) and len(s_db_B) == len(li_B)):
             print("Join Possible")
         else:
-            return "Join no possible"
-        """
+            print("Join no possible")
+            return None
+
         #...do we need to establish primary keys/foreign keys
         #load both tables
         # self.table

@@ -16,7 +16,7 @@ test_class.fr0m(nba_player_data)
 #Testing join command
 # def __join__(self, other, column_on_db_a, filename_db_b, column_on_db_b):
 
-test_class.join(test_class_B, "name", "nba_player.csv", "name")
+test_class.join(test_class_B, "name", "nba_players.csv", "Player")
 #test_class.run()
 #test_class.__repr__()
 
