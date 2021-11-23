@@ -92,10 +92,13 @@ class MySqliteRequest:
         db_B.fr0m(filename_db_b)
         s_db_A = set(self.column_list_extractor(column_on_db_a))
         s_db_B = set(db_B.column_list_extractor(column_on_db_b))
+        print(s_db_B)
+        """
         if (s_db_A and s_db_B):
             print("Join Possible")
         else:
             return "Join no possible"
+        """
         #...do we need to establish primary keys/foreign keys
         #load both tables
         # self.table
@@ -176,6 +179,7 @@ class MySqliteRequest:
                     row += self.run_dictionary[idx][column_value] + " "
                 print(row)
 
+    #Helper Functions
     def column_extractor(self):
 
         choice = random.choice(list(self.run_dictionary.values()))
@@ -190,6 +194,8 @@ class MySqliteRequest:
             li.append(self.query_dictionary[idx][column_on_db])
         return li
 
+    #End Helper Function
+
     def run(self):
         return self.__run__()
 
@@ -200,4 +206,5 @@ class MySqliteRequest:
         return self.__order__(order, column_name)
 
     def join(self, other, column_on_db_a, filename_db_b, column_on_db_b):
-        return self.__join__(column_on_db_a, filename_db_b, column_on_db_b)
+        return self.__join__(other, column_on_db_a, filename_db_b,
+                             column_on_db_b)
