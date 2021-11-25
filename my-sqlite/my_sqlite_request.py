@@ -65,7 +65,8 @@ class MySqliteRequest:
                 for idx in self.query_dictionary:
                     self.run_dictionary[idx] = {}
                     for column in string_s:
-                        self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
+                        self.run_dictionary[idx][
+                            column] = self.query_dictionary[idx][column]
         else:
             print(self.from_message)
 
@@ -76,7 +77,9 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.run_dictionary:
-                if self.run_dictionary[entry] and criteria != self.run_dictionary[entry][column_name]:
+                if self.run_dictionary[
+                        entry] and criteria != self.run_dictionary[entry][
+                            column_name]:
                     self.run_dictionary[entry] = None
         else:
             print(self.from_message)
@@ -86,11 +89,24 @@ class MySqliteRequest:
         The join_ method loads another filename_db
         and will join both database on an on column.
         """
+        if (not self.run_dictionary):
+            self.run_dictionary = self.query_dictionary
+
         db_B = MySqliteRequest()
         db_B.fr0m(filename_db_b)
-        li_A = self.column_list_extractor(column_on_db_a)
-        li_B = db_B.column_list_extractor(column_on_db_b)
-        print(li_A)
+        li_B = db_B.column_dict_list_extractor(column_on_db_b)
+
+        if (li_B):
+            for idx, val in enumerate(self.run_dictionary):
+                if (self.run_dictionary[idx][column_on_db_a] in li_B):
+                    jidx = li_B[self.run_dictionary[idx][column_on_db_a]]
+                    for val in db_B.query_dictionary[jidx]:
+                        self.run_dictionary[idx][val] = db_B.query_dictionary[
+                            jidx][val]
+                    self.run_dictionary[idx].pop('Unnamed: 0', None)
+        else:
+            print("Join failed")
+
         #...do we need to establish primary keys/foreign keys -> NO
         #load both tables
         # self.table
@@ -149,7 +165,6 @@ class MySqliteRequest:
         self.__from__(table_name)
         #update the query dictionary with the proper database
 
-
     def __set__(self, data):
         """
         Set Implement a method to update which will receive data
@@ -168,21 +183,22 @@ class MySqliteRequest:
 
         #update query dictionary from run dictionary
         for idx in self.run_dictionary:
-                if self.run_dictionary[idx] == None:
-                    continue
-                else:
-                    for key in self.run_dictionary[idx]:
-                        self.query_dictionary[idx][key] = self.run_dictionary[idx][key]
+            if self.run_dictionary[idx] == None:
+                continue
+            else:
+                for key in self.run_dictionary[idx]:
+                    self.query_dictionary[idx][key] = self.run_dictionary[idx][
+                        key]
 
         #update csv file from new query dictionary
-        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
+        df = pd.DataFrame(self.query_dictionary[value]
+                          for value in self.query_dictionary)
         df.to_csv(f"{self.data_location}/{self.table}")
 
         #for any update block, the logic is as follows:
         # UPDATE
         # WHERE (as necessary)
         # SET
-
 
     def __delete__(self):
         """
@@ -193,7 +209,9 @@ class MySqliteRequest:
         """
 
     def __run__(self):
-
+        """
+        Prints the product of the query to the console
+        """
         for idx in self.run_dictionary:
             row = ""
             if self.run_dictionary[idx]:
@@ -203,17 +221,26 @@ class MySqliteRequest:
 
     #Helper Functions
     def column_extractor(self):
-
+        """
+        Supports run function in a way columns can be obtained
+        befores printing, formatting is not included on function
+        """
         choice = random.choice(list(self.run_dictionary.values()))
         li = []
         for key in choice:
             li.append(key)
         return li
 
-    def column_list_extractor(self, column_on_db):
-        li = []
+    def column_dict_list_extractor(self, column_on_db):
+        """
+        Supports join function, creates a dictionary 
+        where k = column value and v = k where value 
+        was allocated
+        """
+
+        li = {}
         for idx, val in enumerate(self.query_dictionary):
-            li.append([idx, self.query_dictionary[idx][column_on_db]])
+            li[self.query_dictionary[idx][column_on_db]] = idx
         return li
 
     #End Helper Function
