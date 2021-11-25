@@ -94,6 +94,7 @@ class MySqliteRequest:
         li_B = db_B.column_list_extractor(column_on_db_b)
         s_db_A = set(li_A)
         s_db_B = set(li_B)
+        print(len(s_db_B) == len(li_B))
 
         if (len(s_db_A) == len(li_A) and len(s_db_B) == len(li_B)):
             print("Join Possible")
