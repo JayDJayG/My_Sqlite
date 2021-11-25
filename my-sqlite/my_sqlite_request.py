@@ -12,6 +12,7 @@ class MySqliteRequest:
         self.query_dictionary = {}
         # self.join_dictionary = {}
         self.data_location = '../data/'
+        self.table = ""
         self.from_usage = False
         self.from_message = "Please use from_ method before any other command"
         self.path_message = "File path does not exist, introduce correct path"
@@ -64,8 +65,7 @@ class MySqliteRequest:
                 for idx in self.query_dictionary:
                     self.run_dictionary[idx] = {}
                     for column in string_s:
-                        self.run_dictionary[idx][
-                            column] = self.query_dictionary[idx][column]
+                        self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
         else:
             print(self.from_message)
 
@@ -76,9 +76,7 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.run_dictionary:
-                if self.run_dictionary[
-                        entry] and criteria != self.run_dictionary[entry][
-                            column_name]:
+                if self.run_dictionary[entry] and criteria != self.run_dictionary[entry][column_name]:
                     self.run_dictionary[entry] = None
         else:
             print(self.from_message)
@@ -147,6 +145,10 @@ class MySqliteRequest:
         It will continue to build the request.
         An update request might be associated with a where request
         """
+        self.table = table_name
+        self.__from__(table_name)
+        #update the query dictionary with the proper database
+
 
     def __set__(self, data):
         """
@@ -155,6 +157,32 @@ class MySqliteRequest:
         It will perform the update of attributes on all matching row.
         An update request might be associated with a where request.
         """
+
+        #update run dictionary with new values
+        for key in data.keys():
+            for idx in self.run_dictionary:
+                if self.run_dictionary[idx] == None:
+                    continue
+                else:
+                    self.run_dictionary[idx][key] = data[key]
+
+        #update query dictionary from run dictionary
+        for idx in self.run_dictionary:
+                if self.run_dictionary[idx] == None:
+                    continue
+                else:
+                    for key in self.run_dictionary[idx]:
+                        self.query_dictionary[idx][key] = self.run_dictionary[idx][key]
+
+        #update csv file from new query dictionary
+        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
+        df.to_csv(f"{self.data_location}/{self.table}")
+
+        #for any update block, the logic is as follows:
+        # UPDATE
+        # WHERE (as necessary)
+        # SET
+
 
     def __delete__(self):
         """
