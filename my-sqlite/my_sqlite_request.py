@@ -92,17 +92,8 @@ class MySqliteRequest:
         db_B.fr0m(filename_db_b)
         li_A = self.column_list_extractor(column_on_db_a)
         li_B = db_B.column_list_extractor(column_on_db_b)
-        s_db_A = set(li_A)
-        s_db_B = set(li_B)
-        print(len(s_db_B) == len(li_B))
-
-        if (len(s_db_A) == len(li_A) and len(s_db_B) == len(li_B)):
-            print("Join Possible")
-        else:
-            print("Join no possible")
-            return None
-
-        #...do we need to establish primary keys/foreign keys
+        print(li_A)
+        #...do we need to establish primary keys/foreign keys -> NO
         #load both tables
         # self.table
         # other.__from__(table)
@@ -194,7 +185,7 @@ class MySqliteRequest:
     def column_list_extractor(self, column_on_db):
         li = []
         for idx, val in enumerate(self.query_dictionary):
-            li.append(self.query_dictionary[idx][column_on_db])
+            li.append([idx, self.query_dictionary[idx][column_on_db]])
         return li
 
     #End Helper Function
