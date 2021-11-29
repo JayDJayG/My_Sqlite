@@ -7,6 +7,7 @@ from pandas.core.base import SelectionMixin
 class MySqliteRequest:
     def __init__(self):
         self.columns = []
+        self.values_li = []
         self.columns_extracted = []
         self.run_dictionary = {}
         self.query_dictionary = {}
@@ -107,15 +108,6 @@ class MySqliteRequest:
         else:
             print("Join failed")
 
-        #...do we need to establish primary keys/foreign keys -> NO
-        #load both tables
-        # self.table
-        # other.__from__(table)
-        #do select on tables to have specific columns listed
-        #   table A [column a, b c]
-        #   table B [column d e]
-        #   table C[column a, b, e]
-
     def __order__(self, order, column_name):
         """
         Order Implement an order method which will received two parameters, 
@@ -154,6 +146,10 @@ class MySqliteRequest:
         (a hash of data on format (key => value)).
         It will continue to build the request. During the run() you do the insert.
         """
+        if type(data) == dict:
+            self.values_li.append(data)
+        else:
+            print("Insert right (key => value) entry")
 
     def __update__(self, table_name):
         """
@@ -212,14 +208,25 @@ class MySqliteRequest:
         """
         Prints the product of the query to the console
         """
+        self.run_value()
+        #UNCOMMENT
+        """
         for idx in self.run_dictionary:
             row = ""
             if self.run_dictionary[idx]:
                 for column_value in self.run_dictionary[idx]:
                     row += self.run_dictionary[idx][column_value] + " "
                 print(row)
+        """
 
     #Helper Functions
+    def run_value(self):
+        print(self.columns)
+        for d in self.values_li:
+            for key, value in d.items():
+                print(key)
+                print(value)
+
     def column_extractor(self):
         """
         Supports run function in a way columns can be obtained
@@ -257,3 +264,6 @@ class MySqliteRequest:
     def join(self, other, column_on_db_a, filename_db_b, column_on_db_b):
         return self.__join__(other, column_on_db_a, filename_db_b,
                              column_on_db_b)
+
+    def values(self, data):
+        return self.__values__(data)
