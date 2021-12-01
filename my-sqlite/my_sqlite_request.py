@@ -78,8 +78,8 @@ class MySqliteRequest:
         criteria the condition to actuate by filtering the entries within run_dictionary.
         """
         if self.from_usage == True and column_name in self.columns:
-            for entry in self.run_dictionary:
-                if self.run_dictionary[entry] and criteria != self.run_dictionary[entry][column_name]:
+            for entry in self.query_dictionary:
+                if self.query_dictionary[entry] and criteria != self.query_dictionary[entry][column_name]:
                     self.run_dictionary[entry] = None #everything that isn't matching the criteria becomes none
         else:
             print(self.from_message)

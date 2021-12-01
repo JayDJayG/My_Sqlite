@@ -16,14 +16,14 @@ def q01():
     request = MySqliteRequest()
     request = request.__from__('nba_player_data.csv')
     request = request.__select__('name')
-    request = request.__where__("position", "G")
+    request = request.__where__('college', 'University of California')
     request.run()
 
 def q02():
     print("placeholder")
 
 def main():
-    q00()
+    # q00()
     q01()
 
 if __name__ == "__main__":
