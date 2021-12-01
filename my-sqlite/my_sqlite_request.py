@@ -265,5 +265,8 @@ class MySqliteRequest:
         return self.__join__(other, column_on_db_a, filename_db_b,
                              column_on_db_b)
 
+    def select(self, string_s):
+        return self.__select__(string_s)
+
     def values(self, data):
         return self.__values__(data)
