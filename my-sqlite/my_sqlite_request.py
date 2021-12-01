@@ -41,7 +41,7 @@ class MySqliteRequest:
                     self.query_dictionary[idx][self.columns[jdx]] = value
 
             self.from_usage = True
-            return self.query_dictionary
+            return self
         else:
             print(self.path_message)
 
@@ -70,6 +70,7 @@ class MySqliteRequest:
                             column] = self.query_dictionary[idx][column]
         else:
             print(self.from_message)
+        return self
 
     def __where__(self, column_name, criteria):
         """
@@ -78,12 +79,11 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.run_dictionary:
-                if self.run_dictionary[
-                        entry] and criteria != self.run_dictionary[entry][
-                            column_name]:
-                    self.run_dictionary[entry] = None
+                if self.run_dictionary[entry] and criteria != self.run_dictionary[entry][column_name]:
+                    self.run_dictionary[entry] = None #everything that isn't matching the criteria becomes none
         else:
             print(self.from_message)
+        return self
 
     def __join__(self, other, column_on_db_a, filename_db_b, column_on_db_b):
         """
@@ -208,16 +208,14 @@ class MySqliteRequest:
         """
         Prints the product of the query to the console
         """
-        self.run_value()
+        # self.run_value()
         #UNCOMMENT
-        """
         for idx in self.run_dictionary:
             row = ""
             if self.run_dictionary[idx]:
                 for column_value in self.run_dictionary[idx]:
                     row += self.run_dictionary[idx][column_value] + " "
                 print(row)
-        """
 
     #Helper Functions
     def run_value(self):

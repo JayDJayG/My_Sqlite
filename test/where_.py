@@ -10,7 +10,7 @@ nba_player = "nba_player.csv"
 test_class = MySqliteRequest()
 
 #testing from
-test_class.fr0m(nba_player_data)
+test_class.__from__(nba_player_data)
 
 #Testing select_ command
 test_class.__select__(["name", "year_start", "position"])
