@@ -1,0 +1,165 @@
+Question 0 of 10 | Part i - mysqliterequest respond to simple select + from request
+Part I - Does it work to select name from nba player data?
+request = MySqliteRequest.new
+request = request.from('nba_player_data.csv')
+request = request.select('name')
+request.run
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 1 of 10 | Mysqliterequest respond to simple select + from request + where
+Part I - Does it work to select name from nba player data with a where?
+
+request = MySqliteRequest.new
+request = request.from('nba_player_data.csv')
+request = request.select('name')
+request = request.where('college', 'University of California')
+request.run
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 2 of 10 | Mysqliterequest respond to simple select + from request + multiple where
+Part I - Does it work to select name from nba player data with multiple where?
+
+request = MySqliteRequest.new
+request = request.from('nba_player_data.csv')
+request = request.select('name')
+request = request.where('college', 'University of California')
+request = request.where('year_start', '1997')
+request.run
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 3 of 10 | Mysqliterequest respond to simple insert
+Part I - Does it work to insert a nba player?
+
+request = MySqliteRequest.new
+request = request.insert('nba_player_data.csv')
+request = request.values('name' => 'Alaa Abdelnaby', 'year_start' => '1991', 'year_end' => '1995', 'position' => 'F-C', 'height' => '6-10', 'weight' => '240', 'birth_date' => "June 24, 1968", 'college' => 'Duke University')
+request.run
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 4 of 10 | Mysqliterequest respond to simple update
+Part I - Does it work to update a nba player?
+
+request = MySqliteRequest.new
+request = request.insert('nba_player_data.csv')
+request = request.values('name' => 'Alaa Renamed')
+request = request.where('name', 'Alaa Abdelnaby')
+request.run
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 5 of 10 | Mysqliterequest respond to simple delete
+Part I - Does it work to delete a nba player?
+
+request = MySqliteRequest.new
+request = request.delete()
+request = request.from('nba_player_data.csv')
+request = request.where('name', 'Alaa Abdelnaby')
+request.run
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 6 of 10 | Mysqlite cli simple select
+Part II - Can you run this request in the CLI?
+
+SELECT * FROM students
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 7 of 10 | Mysqlite cli select specific field with where
+Part II - Can you run this request in the CLI?
+
+SELECT name,email FROM students WHERE name = 'Mila'
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 8 of 10 | Mysqlite cli simple insert
+Part II - Can you run this request in the CLI?
+
+INSERT INTO students VALUES (John,john@johndoe.com,A,https://blog.johndoe.com)
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 9 of 10 | Mysqlite cli simple update
+Part II - Can you run this request in the CLI?
+
+UPDATE students SET email = 'jane@janedoe.com', blog = 'https://blog.janedoe.com' WHERE name = 'Mila'
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
+Question 10 of 10 | Mysqlite cli simple delete
+Part II - Can you run this request in the CLI?
+
+DELETE FROM students WHERE name = 'John'
+
+
+Yes
+ 
+
+No
+ 
+
+Crash (Segfault / Abort / Bus error / 500 / ...)
