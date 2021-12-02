@@ -79,8 +79,11 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.query_dictionary:
-                if self.query_dictionary[entry] and criteria != self.query_dictionary[entry][column_name]:
-                    self.run_dictionary[entry] = None #everything that isn't matching the criteria becomes none
+                if self.query_dictionary[
+                        entry] and criteria != self.query_dictionary[entry][
+                            column_name]:
+                    self.run_dictionary[
+                        entry] = None  #everything that isn't matching the criteria becomes none
         else:
             print(self.from_message)
         return self
@@ -139,6 +142,8 @@ class MySqliteRequest:
         Insert Implement a method to insert which will receive a table name (filename).
         It will continue to build the request.
         """
+        self.query_dictionary, self.run_dictionary = self.__from__(table_name)
+        return self
 
     def __values__(self, data):
         """
@@ -146,10 +151,11 @@ class MySqliteRequest:
         (a hash of data on format (key => value)).
         It will continue to build the request. During the run() you do the insert.
         """
-        if type(data) == dict:
+        print(data)
+        if type(data) == list:
             self.values_li.append(data)
         else:
-            print("Insert right (key => value) entry")
+            print("Right data format [{'name':'Gaetan'},{'lastname':'Juvin'}]")
 
     def __update__(self, table_name):
         """
@@ -268,3 +274,6 @@ class MySqliteRequest:
 
     def values(self, data):
         return self.__values__(data)
+
+    def insert(self, table_name):
+        return self.__insert__(table_name)

@@ -16,9 +16,8 @@ test_class.__from__(nba_player_data)
 test_class.__select__("year_start")
 
 #Testing Values
-test_class.values({"name": "Javier"})
-test_class.values({"namE": "Javier"})
+test_class.values([{"namE": "Javier"}, {"YO": "TU"}])
 
-test_class.run()
+#test_class.run()
 
 # Desired output -> 1 : {name: "Mammadu"}
