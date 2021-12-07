@@ -19,5 +19,3 @@ test_class.__select__("year_start")
 test_class.values([{"namE": "Gaetan"}, {"lastname": "Juvin"}])
 
 #test_class.run()
-
-# Desired output -> 1 : {name: "Mammadu"}

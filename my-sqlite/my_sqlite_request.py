@@ -11,7 +11,6 @@ class MySqliteRequest:
         self.columns_extracted = []
         self.run_dictionary = {}
         self.query_dictionary = {}
-        # self.join_dictionary = {}
         self.data_location = '../data/'
         self.table = ""
         self.from_usage = False
@@ -157,7 +156,8 @@ class MySqliteRequest:
         """
         if type(data) == list:
             for kv in data:
-                self.values_li.append(kv)
+                if type(kv) == dict:
+                    self.values_li.append(kv)
         else:
             print("Right data format [{'name':'Gaetan'},{'lastname':'Juvin'}]")
 
