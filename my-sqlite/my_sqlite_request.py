@@ -144,6 +144,7 @@ class MySqliteRequest:
         """
         self.query_dictionary, self.run_dictionary = self.__from__(table_name)
         return self
+        #each call of insert will be a row. If values for each column aren't provided they be come None
 
     def __values__(self, data):
         """
@@ -201,6 +202,8 @@ class MySqliteRequest:
         # UPDATE
         # WHERE (as necessary)
         # SET
+        
+        #values and where need one instance of the column when using set
 
     def __delete__(self):
         """
@@ -274,6 +277,7 @@ class MySqliteRequest:
 
     def values(self, data):
         return self.__values__(data)
+        #
 
     def insert(self, table_name):
         return self.__insert__(table_name)
