@@ -16,6 +16,18 @@ class MySqliteRequest:
         self.from_usage = False
         self.from_message = "Please use from_ method before any other command"
         self.path_message = "File path does not exist, introduce correct path"
+        self.load_dictionary = {
+            "__from__": []
+            , "__update__": []
+            , "__values__": []
+            , "__insert__": []
+            , "__order__": []
+            , "__select__": []
+            , "__where__": []
+            , "__set__": []
+            , "__delete__": []
+            , "__join__": []
+        }
 
     def __repr__(self):
         print(f"current state of query is {self.run_dictionary}")
@@ -65,8 +77,7 @@ class MySqliteRequest:
                 for idx in self.query_dictionary:
                     self.run_dictionary[idx] = {}
                     for column in string_s:
-                        self.run_dictionary[idx][
-                            column] = self.query_dictionary[idx][column]
+                        self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
         else:
             print(self.from_message)
         return self
@@ -218,6 +229,17 @@ class MySqliteRequest:
         It will continue to build the request. 
         An delete request might be associated with a where request.
         """
+    
+    def __load__(self):
+        # print(self.load_dictionary) #debug
+        for key in self.load_dictionary.keys():
+            for args in self.load_dictionary[key]:
+                    try:
+                        getattr(self, key)(*args)
+                    except TypeError:
+                        getattr(self, key)(args)
+
+
 
     def __run__(self):
         """
@@ -267,20 +289,30 @@ class MySqliteRequest:
     #End Helper Function
 
     def run(self):
+        self.__load__()
         return self.__run__()
 
     def fr0m(self, table_name):
-        return self.__from__(table_name)
+        # return self.__from__(table_name)
+        self.load_dictionary["__from__"].append(table_name)
+        return self
+    
+    def where(self, column_name, criteria):
+        self.load_dictionary["__where__"].append([column_name, criteria])
+        return self
 
     def order(self, order, column_name):
-        return self.__order__(order, column_name)
+        # return self.__order__(order, column_name)
+        self.load_dictionary["order"].append([order, column_name])
 
     def join(self, other, column_on_db_a, filename_db_b, column_on_db_b):
         return self.__join__(other, column_on_db_a, filename_db_b,
                              column_on_db_b)
 
     def select(self, string_s):
-        return self.__select__(string_s)
+        # return self.__select__(string_s)
+        self.load_dictionary["__select__"].append(string_s)
+        return self
 
     def values(self, data):
         return self.__values__(data)

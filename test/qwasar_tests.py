@@ -8,23 +8,23 @@ nba_player = "nba_player.csv"
 
 def q00(): #Part I - Does it work to select name from nba player data?
     request = MySqliteRequest()
-    request = request.__from__('nba_player_data.csv')
-    request = request.__select__("name")
+    request = request.fr0m('nba_player_data.csv')
+    request = request.select("name")
     request.run()
 
 def q01(): #Part I - Does it work to select name from nba player data with a where?
     request = MySqliteRequest()
-    request = request.__from__('nba_player_data.csv')
-    request = request.__select__('name')
-    request = request.__where__('college', 'University of California')
+    request = request.fr0m('nba_player_data.csv')
+    request = request.select('name')
+    request = request.where('college', 'University of California')
     request.run()
 
 def q02(): #Part I - Does it work to select name from nba player data with multiple where?
     request = MySqliteRequest()
     request = request.fr0m('nba_player_data.csv')
-    request = request.__select__('name')
-    request = request.__where__('college', 'University of California')
-    request = request.__where__('year_start', '1997')
+    request = request.select('name')
+    request = request.where('college', 'University of California')
+    request = request.where('year_start', '1997')
     request.run()
 
 def q03(): #Part I - Does it work to insert a nba player?
@@ -35,7 +35,7 @@ def q03(): #Part I - Does it work to insert a nba player?
 
 def q04(): #Part I - Does it work to update a nba player?
     request = MySqliteRequest()
-    request = request.__insert__('nba_player_data.csv')
+    request = request.__insert__('nba_player_data.csv') #should this actually be the set function?
     request = request.__values__("'name' => 'Alaa Renamed'")
     request = request.__where__('name', 'Alaa Abdelnaby')
     request.run()
@@ -45,6 +45,8 @@ def q05(): #Part I - Does it work to delete a nba player?
     request = request.__delete__()
     request = request.fr0m('nba_player_data.csv')
     request = request.__where__('name', 'Alaa Abdelnaby')
+
+
     request.run()
 
 # def q06(): #Part II - Can you run this request in the CLI?
@@ -61,8 +63,8 @@ def q05(): #Part I - Does it work to delete a nba player?
 def main():
     # q00()
     # q01()
-    # q02()
-    q03()
+    q02()
+    # q03()
     # q04()
     # q05()
     # q06()
