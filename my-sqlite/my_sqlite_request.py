@@ -11,7 +11,6 @@ class MySqliteRequest:
         self.columns_extracted = []
         self.run_dictionary = {}
         self.query_dictionary = {}
-        # self.join_dictionary = {}
         self.data_location = '../data/'
         self.table = ""
         self.from_usage = False
@@ -41,9 +40,9 @@ class MySqliteRequest:
                     self.query_dictionary[idx][self.columns[jdx]] = value
 
             self.from_usage = True
-            return self
         else:
             print(self.path_message)
+        return self
 
     def __select__(self, string_s):
         """
@@ -111,6 +110,8 @@ class MySqliteRequest:
         else:
             print("Join failed")
 
+        return self
+
     def __order__(self, order, column_name):
         """
         Order Implement an order method which will received two parameters, 
@@ -137,6 +138,8 @@ class MySqliteRequest:
         else:
             print(self.from_message)
 
+        return self
+
     def __insert__(self, table_name):
         """
         Insert Implement a method to insert which will receive a table name (filename).
@@ -152,11 +155,14 @@ class MySqliteRequest:
         (a hash of data on format (key => value)).
         It will continue to build the request. During the run() you do the insert.
         """
-        print(data)
         if type(data) == list:
-            self.values_li.append(data)
+            for kv in data:
+                if type(kv) == dict:
+                    self.values_li.append(kv)
         else:
             print("Right data format [{'name':'Gaetan'},{'lastname':'Juvin'}]")
+
+        return self
 
     def __update__(self, table_name):
         """
@@ -166,6 +172,7 @@ class MySqliteRequest:
         """
         self.table = table_name
         self.__from__(table_name)
+        return self
         #update the query dictionary with the proper database
 
     def __set__(self, data):
@@ -183,7 +190,6 @@ class MySqliteRequest:
                     continue
                 else:
                     self.run_dictionary[idx][key] = data[key]
-
         #update query dictionary from run dictionary
         for idx in self.run_dictionary:
             if self.run_dictionary[idx] == None:
@@ -217,6 +223,7 @@ class MySqliteRequest:
         """
         Prints the product of the query to the console
         """
+        #complete self.run
         # self.run_value()
         #UNCOMMENT
         for idx in self.run_dictionary:
