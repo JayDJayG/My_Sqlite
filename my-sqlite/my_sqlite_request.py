@@ -165,9 +165,13 @@ class MySqliteRequest:
         Insert Implement a method to insert which will receive a table name (filename).
         It will continue to build the request.
         """
-        self.query_dictionary, self.run_dictionary = self.__from__(table_name)
-        #path of table to update
-        self.data_location += table_name
+        self = self.__from__(table_name)
+        length = len(self.query_dictionary)
+        self.query_dictionary[length] = {}
+        for item in self.values_li:
+            key = list(item.keys())[0]
+            value = list(item.values())[0]
+            self.query_dictionary[length][key] = value
         return self
         #each call of insert will be a row. If values for each column aren't provided they be come None
 
@@ -183,7 +187,6 @@ class MySqliteRequest:
                     self.values_li.append(kv)
         else:
             print("Right data format [{'name':'Gaetan'},{'lastname':'Juvin'}]")
-
         return self
 
     def __update__(self, table_name):
@@ -223,7 +226,7 @@ class MySqliteRequest:
 
         #update csv file from new query dictionary
         df = pd.DataFrame(self.query_dictionary[value]
-                          for value in self.query_dictionary)
+        for value in self.query_dictionary)
         df.to_csv(f"{self.data_location}/{self.table}")
 
         #for any update block, the logic is as follows:
@@ -243,7 +246,6 @@ class MySqliteRequest:
         return self
 
     def __load__(self):
-        # print(self.load_dictionary) #debug
         for key in self.load_dictionary.keys():
             for args in self.load_dictionary[key]:
                 try:
@@ -327,10 +329,9 @@ class MySqliteRequest:
         return self
 
     def values(self, data):
-        return self.__values__(data)
-
-    def delete(self):
-        return self.__delete__()
+        self.load_dictionary["__values__"].append(data)
+        return self
 
     def insert(self, table_name):
-        return self.__insert__(table_name)
+        self.load_dictionary["__insert__"].append(table_name)
+        return self

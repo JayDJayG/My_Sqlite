@@ -29,8 +29,9 @@ def q02(): #Part I - Does it work to select name from nba player data with multi
 
 def q03(): #Part I - Does it work to insert a nba player?
     request = MySqliteRequest()
-    request = request.__insert__('nba_player_data.csv')
-    request = request.__values__("'name' => 'Alaa Abdelnaby', 'year_start' => '1991', 'year_end' => '1995', 'position' => 'F-C', 'height' => '6-10', 'weight' => '240', 'birth_date' => 'June 24, 1968', 'college' => 'Duke University'")
+    request = request.insert('nba_player_data.csv')
+    # request = request.__values__("'name' => 'Alaa Abdelnaby', 'year_start' => '1991', 'year_end' => '1995', 'position' => 'F-C', 'height' => '6-10', 'weight' => '240', 'birth_date' => 'June 24, 1968', 'college' => 'Duke University'")
+    request = request.values([{'name': 'Alaa Abdelnaby'}, {'year_start': '1991'}, {'year_end': '1995'}, {'position': 'F-C'}, {'height': '6-10'}, {'weight': '240'}, {'birth_date': 'June 24, 1968'}, {'college': 'Duke University'}])
     request.run()
 
 def q04(): #Part I - Does it work to update a nba player?
@@ -63,8 +64,8 @@ def q05(): #Part I - Does it work to delete a nba player?
 def main():
     # q00()
     # q01()
-    q02()
-    # q03()
+    # q02()
+    q03()
     # q04()
     # q05()
     # q06()
