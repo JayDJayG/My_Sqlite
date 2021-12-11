@@ -1,3 +1,4 @@
+from numpy import where
 import pandas as pd
 from os.path import exists
 import random
@@ -8,25 +9,26 @@ class MySqliteRequest:
     def __init__(self):
         self.columns = []
         self.values_li = []
-        self.columns_extracted = []
         self.run_dictionary = {}
         self.query_dictionary = {}
+        self.columns_extracted = []
         self.data_location = '../data/'
         self.table = ""
         self.from_usage = False
+        self.delete_flag = False
         self.from_message = "Please use from_ method before any other command"
         self.path_message = "File path does not exist, introduce correct path"
         self.load_dictionary = {
-            "__from__": []
-            , "__update__": []
-            , "__values__": []
-            , "__insert__": []
-            , "__order__": []
-            , "__select__": []
-            , "__where__": []
-            , "__set__": []
-            , "__delete__": []
-            , "__join__": []
+            "__from__": [],
+            "__update__": [],
+            "__values__": [],
+            "__insert__": [],
+            "__order__": [],
+            "__select__": [],
+            "__where__": [],
+            "__set__": [],
+            "__delete__": [],
+            "__join__": []
         }
 
     def __repr__(self):
@@ -52,6 +54,7 @@ class MySqliteRequest:
                     self.query_dictionary[idx][self.columns[jdx]] = value
 
             self.from_usage = True
+            self.run_dictionary = self.query_dictionary
         else:
             print(self.path_message)
         return self
@@ -77,7 +80,8 @@ class MySqliteRequest:
                 for idx in self.query_dictionary:
                     self.run_dictionary[idx] = {}
                     for column in string_s:
-                        self.run_dictionary[idx][column] = self.query_dictionary[idx][column]
+                        self.run_dictionary[idx][
+                            column] = self.query_dictionary[idx][column]
         else:
             print(self.from_message)
         return self
@@ -89,11 +93,17 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.query_dictionary:
-                if self.query_dictionary[
+                if self.delete_flag == False and self.query_dictionary[
                         entry] and criteria != self.query_dictionary[entry][
                             column_name]:
-                    self.run_dictionary[
-                        entry] = None  #everything that isn't matching the criteria becomes none
+                    #everything that isn't matching the criteria becomes none
+                    self.run_dictionary[entry] = None
+
+                if self.delete_flag and self.query_dictionary[
+                        entry] and criteria == self.query_dictionary[entry][
+                            column_name]:
+                    print("CULO")
+                    self.run_dictionary[entry] = None
         else:
             print(self.from_message)
         return self
@@ -157,6 +167,8 @@ class MySqliteRequest:
         It will continue to build the request.
         """
         self.query_dictionary, self.run_dictionary = self.__from__(table_name)
+        #path of table to update
+        self.data_location += table_name
         return self
         #each call of insert will be a row. If values for each column aren't provided they be come None
 
@@ -219,32 +231,33 @@ class MySqliteRequest:
         # UPDATE
         # WHERE (as necessary)
         # SET
-        
+
         #values and where need one instance of the column when using set
 
     def __delete__(self):
         """
-        Delete Implement a delete method. 
-        It set the request to delete on all matching row. 
+        Delete Implement a delete method. It set the request to delete on all matching row. 
         It will continue to build the request. 
         An delete request might be associated with a where request.
         """
-    
+        self.delete_flag = True
+        return self
+
     def __load__(self):
         # print(self.load_dictionary) #debug
         for key in self.load_dictionary.keys():
             for args in self.load_dictionary[key]:
-                    try:
-                        getattr(self, key)(*args)
-                    except TypeError:
-                        getattr(self, key)(args)
-
-
+                try:
+                    getattr(self, key)(*args)
+                except TypeError:
+                    getattr(self, key)(args)
 
     def __run__(self):
         """
         Prints the product of the query to the console
         """
+        if (str(self.run_dictionary.keys()) == "dict_keys([0])"):
+            self.run_dictionary = self.query_dictionary
         #complete self.run
         # self.run_value()
         #UNCOMMENT
@@ -296,7 +309,7 @@ class MySqliteRequest:
         # return self.__from__(table_name)
         self.load_dictionary["__from__"].append(table_name)
         return self
-    
+
     def where(self, column_name, criteria):
         self.load_dictionary["__where__"].append([column_name, criteria])
         return self
@@ -316,7 +329,9 @@ class MySqliteRequest:
 
     def values(self, data):
         return self.__values__(data)
-        #
+
+    def delete(self):
+        return self.__delete__()
 
     def insert(self, table_name):
         return self.__insert__(table_name)
