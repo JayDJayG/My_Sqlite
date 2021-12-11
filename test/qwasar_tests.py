@@ -1,5 +1,6 @@
 import sys
 sys.path.insert(0, '../my-sqlite')
+# print(sys.path)
 from my_sqlite_request import MySqliteRequest
 
 nba_player_data = "nba_player_data.csv"
@@ -36,9 +37,9 @@ def q03(): #Part I - Does it work to insert a nba player?
 
 def q04(): #Part I - Does it work to update a nba player?
     request = MySqliteRequest()
-    request = request.__insert__('nba_player_data.csv') #should this actually be the set function?
-    request = request.__values__("'name' => 'Alaa Renamed'")
-    request = request.__where__('name', 'Alaa Abdelnaby')
+    request = request.update('nba_player_data.csv') #should this actually be the set function?
+    request = request.set([{'name': 'Alaa Renamed'}])
+    request = request.where('name', 'Alaa Abdelnaby')
     request.run()
 
 def q05(): #Part I - Does it work to delete a nba player?
@@ -65,8 +66,8 @@ def main():
     # q00()
     # q01()
     # q02()
-    q03()
-    # q04()
+    # q03()
+    q04()
     # q05()
     # q06()
     # q07()
