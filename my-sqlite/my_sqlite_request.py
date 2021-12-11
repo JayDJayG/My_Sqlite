@@ -102,7 +102,6 @@ class MySqliteRequest:
                 if self.delete_flag and self.query_dictionary[
                         entry] and criteria == self.query_dictionary[entry][
                             column_name]:
-                    print("CULO")
                     self.run_dictionary[entry] = None
         else:
             print(self.from_message)

@@ -11,3 +11,5 @@ request = request.delete()
 request = request.__from__('nba_player_data.csv')
 request = request.where('name', 'Alaa Abdelnaby')
 request.run()
+
+print(list(request.run_dictionary.keys())[-1] + 1)
