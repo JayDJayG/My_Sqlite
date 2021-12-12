@@ -64,10 +64,10 @@ def q05(): #Part I - Does it work to delete a nba player?
 
 def main():
     # q00()
-    # q01()
+    q01()
     # q02()
     # q03()
-    q04()
+    # q04()
     # q05()
     # q06()
     # q07()

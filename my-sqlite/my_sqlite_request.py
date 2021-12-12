@@ -26,8 +26,8 @@ class MySqliteRequest:
             "__order__": [],
             "__select__": [],
             "__where__": [],
-            "__set__": [],
             "__delete__": [],
+            "__set__": [],
             "__join__": []
         }
 
@@ -91,18 +91,22 @@ class MySqliteRequest:
         The where_ method takes two arguments. column_name targets the column and
         criteria the condition to actuate by filtering the entries within run_dictionary.
         """
+        print(id(self.query_dictionary)) #debug
+        print(id(self.run_dictionary)) #debug
         if self.from_usage == True and column_name in self.columns:
             for entry in self.query_dictionary:
-                if self.delete_flag == False and self.query_dictionary[entry] and criteria != self.query_dictionary[entry][column_name]:
+                if ((self.delete_flag == False) and (self.query_dictionary[entry]) and (criteria != self.query_dictionary[entry][column_name])):
                     #everything that isn't matching the criteria becomes none
+                    # print(f"debug, {entry}, {self.query_dictionary[entry]}")
                     self.run_dictionary[entry] = None
+                    # print(f"debug, {entry}, {self.query_dictionary[entry]}")
 
-                if self.delete_flag and self.query_dictionary[
-                        entry] and criteria == self.query_dictionary[entry][
-                            column_name]:
+                if self.delete_flag == True and self.query_dictionary[entry] and criteria == self.query_dictionary[entry][column_name]:
                     self.run_dictionary[entry] = None
         else:
             print(self.from_message)
+
+        # print(self.query_dictionary) #debug
         return self
 
     def __join__(self, other, column_on_db_a, filename_db_b, column_on_db_b):
@@ -195,6 +199,7 @@ class MySqliteRequest:
         It will continue to build the request.
         An update request might be associated with a where request
         """
+        # self.query_dictionary, self.run_dictionary = self.__from__(table_name)
         self.table = table_name
         self.__from__(table_name)
         # print(self.query_dictionary) #debug
@@ -208,7 +213,7 @@ class MySqliteRequest:
         It will perform the update of attributes on all matching row.
         An update request might be associated with a where request.
         """
-        print(self.query_dictionary) #debug
+        # print(self.query_dictionary) #debug
 
         #update run dictionary with new values
         for key in data.keys():
@@ -251,6 +256,7 @@ class MySqliteRequest:
     def __load__(self):
         for key in self.load_dictionary.keys():
             for args in self.load_dictionary[key]:
+                print(key, args)
                 try:
                     getattr(self, key)(*args)
                 except TypeError:
@@ -262,6 +268,9 @@ class MySqliteRequest:
         """
         if (str(self.run_dictionary.keys()) == "dict_keys([0])"):
             self.run_dictionary = self.query_dictionary
+            # print("we debugging") #debug
+            # print(self.run_dictionary) #debug
+            # print(self.query_dictionary) #debug
         #complete self.run
         # self.run_value()
         #UNCOMMENT
