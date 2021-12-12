@@ -43,12 +43,10 @@ def q04(): #Part I - Does it work to update a nba player?
     request.run()
 
 def q05(): #Part I - Does it work to delete a nba player?
-    request = MySqliteRequest.new
+    request = MySqliteRequest()
     request = request.__delete__()
     request = request.fr0m('nba_player_data.csv')
     request = request.__where__('name', 'Alaa Abdelnaby')
-
-
     request.run()
 
 # def q06(): #Part II - Can you run this request in the CLI?
@@ -64,11 +62,11 @@ def q05(): #Part I - Does it work to delete a nba player?
 
 def main():
     # q00()
-    q01()
+    # q01()
     # q02()
     # q03()
     # q04()
-    # q05()
+    q05()
     # q06()
     # q07()
     # q08()

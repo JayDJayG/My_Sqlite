@@ -54,7 +54,7 @@ class MySqliteRequest:
                     self.query_dictionary[idx][self.columns[jdx]] = value
 
             self.from_usage = True
-            self.run_dictionary = self.query_dictionary
+            self.run_dictionary = self.query_dictionary.copy()
         else:
             print(self.path_message)
         return self
@@ -91,8 +91,8 @@ class MySqliteRequest:
         The where_ method takes two arguments. column_name targets the column and
         criteria the condition to actuate by filtering the entries within run_dictionary.
         """
-        print(id(self.query_dictionary)) #debug
-        print(id(self.run_dictionary)) #debug
+        # print(id(self.query_dictionary)) #debug
+        # print(id(self.run_dictionary)) #debug
         if self.from_usage == True and column_name in self.columns:
             for entry in self.query_dictionary:
                 if ((self.delete_flag == False) and (self.query_dictionary[entry]) and (criteria != self.query_dictionary[entry][column_name])):
@@ -174,6 +174,7 @@ class MySqliteRequest:
             key = list(item.keys())[0]
             value = list(item.values())[0]
             self.query_dictionary[length][key] = value
+        self.run_dictionary = self.query_dictionary.copy()
         return self
         #each call of insert will be a row. If values for each column aren't provided they be come None
 
@@ -222,7 +223,7 @@ class MySqliteRequest:
                     continue
                 else:
                     self.run_dictionary[idx][key] = data[key]
-        # print(self.run_dictionary) #debug
+        # print(f"self.run_dictionary = {self.run_dictionary}") #debug
 
         #update query dictionary from run dictionary
         for idx in self.run_dictionary:
@@ -232,10 +233,11 @@ class MySqliteRequest:
                 for key in self.run_dictionary[idx]:
                     self.query_dictionary[idx][key] = self.run_dictionary[idx][key]
 
-        #update csv file from new query dictionary
+        # #update csv file from new query dictionary
         df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
+        df = df.reset_index(drop=True)
         print(df)
-        df.to_csv(f"{self.data_location}/{self.table}")
+        df.to_csv(f"{self.data_location}/{self.table}", index=False)
 
         #for any update block, the logic is as follows:
         # UPDATE
@@ -266,8 +268,8 @@ class MySqliteRequest:
         """
         Prints the product of the query to the console
         """
-        if (str(self.run_dictionary.keys()) == "dict_keys([0])"):
-            self.run_dictionary = self.query_dictionary
+        if (len(self.run_dictionary.keys()) == 0):
+            self.run_dictionary = self.query_dictionary.copy()
             # print("we debugging") #debug
             # print(self.run_dictionary) #debug
             # print(self.query_dictionary) #debug
