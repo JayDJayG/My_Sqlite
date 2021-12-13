@@ -44,9 +44,9 @@ def q04(): #Part I - Does it work to update a nba player?
 
 def q05(): #Part I - Does it work to delete a nba player?
     request = MySqliteRequest()
-    request = request.__delete__()
+    request = request.delete()
     request = request.fr0m('nba_player_data.csv')
-    request = request.__where__('name', 'Alaa Abdelnaby')
+    request = request.where('name', 'Alaa Abdelnaby')
     request.run()
 
 # def q06(): #Part II - Can you run this request in the CLI?
