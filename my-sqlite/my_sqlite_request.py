@@ -74,6 +74,9 @@ class MySqliteRequest:
                 string_s.append(s)
 
             column_bool = True
+            if string_s[0] == '*':
+                string_s = list(self.query_dictionary[0].keys())
+                print(string_s)
             for column in string_s:
                 if column not in self.columns:
                     column_bool = False

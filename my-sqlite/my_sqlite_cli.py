@@ -28,10 +28,12 @@ def parse_prompt(user_input, request_object):
 
 def run_commands(command_list, request_object):
     for idx, query in enumerate(command_list):
+        # print(query) #debug
         try:
             getattr(request_object, query[0])(*query[1:])
         except TypeError:
             getattr(request_object, query[0])(query[1:])
+    request_object.run()
 
 
 request_object = MySqliteRequest()
