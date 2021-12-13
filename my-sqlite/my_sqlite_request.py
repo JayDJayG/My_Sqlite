@@ -26,8 +26,8 @@ class MySqliteRequest:
             "__order__": [],
             "__select__": [],
             "__where__": [],
-            "__set__": [],
             "__delete__": [],
+            "__set__": [],
             "__join__": []
         }
 
@@ -40,6 +40,7 @@ class MySqliteRequest:
         from_ implements the sql FROM command, each request must have one.
         from_ will take a string(table_name) this is the name of the csv file to query.
         """
+        self.table = table_name
         csv_path = self.data_location + table_name  #create path
         if (exists(csv_path)):  #check file existence
             df = pd.read_csv(csv_path, sep=',')
@@ -54,7 +55,7 @@ class MySqliteRequest:
                     self.query_dictionary[idx][self.columns[jdx]] = value
 
             self.from_usage = True
-            self.run_dictionary = self.query_dictionary
+            self.run_dictionary = self.query_dictionary.copy()
         else:
             print(self.path_message)
         return self
@@ -93,16 +94,13 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.query_dictionary:
-                if self.delete_flag == False and self.query_dictionary[
-                        entry] and criteria != self.query_dictionary[entry][
-                            column_name]:
+                if ((self.delete_flag == False) and (self.query_dictionary[entry]) and (criteria != self.query_dictionary[entry][column_name])):
                     #everything that isn't matching the criteria becomes none
                     self.run_dictionary[entry] = None
 
-                if self.delete_flag and self.query_dictionary[
-                        entry] and criteria == self.query_dictionary[entry][
-                            column_name]:
-                    self.run_dictionary[entry] = None
+                #MD: not sure if this is allowed, because there may be multiple where queries
+                # if self.delete_flag == True and self.query_dictionary[entry] and criteria == self.query_dictionary[entry][column_name]:
+                #     self.run_dictionary[entry] = None
         else:
             print(self.from_message)
         return self
@@ -165,9 +163,21 @@ class MySqliteRequest:
         Insert Implement a method to insert which will receive a table name (filename).
         It will continue to build the request.
         """
-        self.query_dictionary, self.run_dictionary = self.__from__(table_name)
-        #path of table to update
-        self.data_location += table_name
+        self.table = table_name
+        self = self.__from__(table_name)
+        length = len(self.query_dictionary)
+        self.query_dictionary[length] = {}
+        for item in self.values_li:
+            key = list(item.keys())[0]
+            value = list(item.values())[0]
+            self.query_dictionary[length][key] = value
+        self.run_dictionary = self.query_dictionary.copy()
+
+        # #update csv file from new query dictionary
+        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
+        # print(df) #debug
+        df.to_csv(f"{self.data_location}/{self.table}", index=False)
+
         return self
         #each call of insert will be a row. If values for each column aren't provided they be come None
 
@@ -177,13 +187,14 @@ class MySqliteRequest:
         (a hash of data on format (key => value)).
         It will continue to build the request. During the run() you do the insert.
         """
+        if type(data) == dict:
+            data = [data]
         if type(data) == list:
             for kv in data:
                 if type(kv) == dict:
                     self.values_li.append(kv)
         else:
             print("Right data format [{'name':'Gaetan'},{'lastname':'Juvin'}]")
-
         return self
 
     def __update__(self, table_name):
@@ -192,8 +203,10 @@ class MySqliteRequest:
         It will continue to build the request.
         An update request might be associated with a where request
         """
+        # self.query_dictionary, self.run_dictionary = self.__from__(table_name)
         self.table = table_name
         self.__from__(table_name)
+        # print(self.query_dictionary) #debug
         return self
         #update the query dictionary with the proper database
 
@@ -204,6 +217,7 @@ class MySqliteRequest:
         It will perform the update of attributes on all matching row.
         An update request might be associated with a where request.
         """
+        # print(self.query_dictionary) #debug
 
         #update run dictionary with new values
         for key in data.keys():
@@ -212,19 +226,20 @@ class MySqliteRequest:
                     continue
                 else:
                     self.run_dictionary[idx][key] = data[key]
+        # print(f"self.run_dictionary = {self.run_dictionary}") #debug
+
         #update query dictionary from run dictionary
         for idx in self.run_dictionary:
             if self.run_dictionary[idx] == None:
                 continue
             else:
                 for key in self.run_dictionary[idx]:
-                    self.query_dictionary[idx][key] = self.run_dictionary[idx][
-                        key]
-
-        #update csv file from new query dictionary
-        df = pd.DataFrame(self.query_dictionary[value]
-                          for value in self.query_dictionary)
-        df.to_csv(f"{self.data_location}/{self.table}")
+                    self.query_dictionary[idx][key] = self.run_dictionary[idx][key]
+        self.run_dictionary = self.query_dictionary.copy()
+        # #update csv file from new query dictionary
+        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
+        # print(df) #debug
+        df.to_csv(f"{self.data_location}/{self.table}", index=False)
 
         #for any update block, the logic is as follows:
         # UPDATE
@@ -233,19 +248,30 @@ class MySqliteRequest:
 
         #values and where need one instance of the column when using set
 
-    def __delete__(self):
+    def __delete__(self, dummystring):
         """
         Delete Implement a delete method. It set the request to delete on all matching row. 
         It will continue to build the request. 
         An delete request might be associated with a where request.
         """
-        self.delete_flag = True
+        for idx in self.run_dictionary:
+            if self.run_dictionary[idx] == None:
+                continue
+            else:
+                for key in self.run_dictionary[idx]:
+                    self.query_dictionary[idx] = None
+        self.run_dictionary = self.query_dictionary.copy()
+
+        # #update csv file from new query dictionary
+        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary if value )
+        # print(df) #debug
+        df.to_csv(f"{self.data_location}/{self.table}", index=False)
         return self
 
     def __load__(self):
-        # print(self.load_dictionary) #debug
         for key in self.load_dictionary.keys():
             for args in self.load_dictionary[key]:
+                # print(key, args) #debug
                 try:
                     getattr(self, key)(*args)
                 except TypeError:
@@ -255,8 +281,8 @@ class MySqliteRequest:
         """
         Prints the product of the query to the console
         """
-        if (str(self.run_dictionary.keys()) == "dict_keys([0])"):
-            self.run_dictionary = self.query_dictionary
+        if (len(self.run_dictionary.keys()) == 0):
+            self.run_dictionary = self.query_dictionary.copy()
         #complete self.run
         # self.run_value()
         #UNCOMMENT
@@ -264,7 +290,10 @@ class MySqliteRequest:
             row = ""
             if self.run_dictionary[idx]:
                 for column_value in self.run_dictionary[idx]:
-                    row += self.run_dictionary[idx][column_value] + " "
+                    try:
+                        row += self.run_dictionary[idx][column_value] + " "
+                    except TypeError:
+                        continue
                 print(row)
 
     #Helper Functions
@@ -327,10 +356,21 @@ class MySqliteRequest:
         return self
 
     def values(self, data):
-        return self.__values__(data)
-
-    def delete(self):
-        return self.__delete__()
+        self.load_dictionary["__values__"].append(data)
+        return self
 
     def insert(self, table_name):
-        return self.__insert__(table_name)
+        self.load_dictionary["__insert__"].append(table_name)
+        return self
+
+    def update(self, table_name):
+        self.load_dictionary["__update__"].append(table_name)
+        return self
+    
+    def set(self, data):
+        self.load_dictionary["__set__"].append(data)
+        return self
+
+    def delete(self):
+        self.load_dictionary["__delete__"].append("n/a")
+        return self
