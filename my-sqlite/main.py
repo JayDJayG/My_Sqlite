@@ -1,6 +1,9 @@
+import my_sqlite_request
+import my_sqlite_cli
+
 # Defining main function
 def main():
-    print("hey there")
+    my_sqlite_cli.main()
 
 # Using the special variable 
 # __name__
