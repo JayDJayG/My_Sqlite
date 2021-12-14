@@ -1,5 +1,8 @@
 import sys
-sys.path.insert(0, '../my-sqlite')
+import os
+dirname = os.path.dirname(__file__)[:-4] + "my-sqlite"
+sys.path.insert(0, dirname)
+
 # print(sys.path)
 from my_sqlite_request import MySqliteRequest
 
