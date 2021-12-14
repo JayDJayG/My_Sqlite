@@ -117,7 +117,7 @@ class MySqliteRequest:
             self.run_dictionary = self.query_dictionary
 
         db_B = MySqliteRequest()
-        db_B.fr0m(filename_db_b)
+        db_B.FROM(filename_db_b)
         li_B = db_B.column_dict_list_extractor(column_on_db_b)
 
         if (li_B):
@@ -336,7 +336,7 @@ class MySqliteRequest:
         self.__load__()
         return self.__run__()
 
-    def fr0m(self, table_name):
+    def FROM(self, table_name):
         # return self.__from__(table_name)
         self.load_dictionary["__from__"].append(table_name)
         return self
@@ -353,7 +353,7 @@ class MySqliteRequest:
         return self.__join__(other, column_on_db_a, filename_db_b,
                              column_on_db_b)
 
-    def select(self, string_s):
+    def SELECT(self, string_s):
         # return self.__select__(string_s)
         self.load_dictionary["__select__"].append(string_s)
         return self

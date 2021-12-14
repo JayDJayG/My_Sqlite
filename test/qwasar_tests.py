@@ -7,23 +7,23 @@ nba_player_data = "nba_player_data.csv"
 nba_player = "nba_player.csv"
 
 
-def q00(): #Part I - Does it work to select name from nba player data?
+def q00(): #Part I - Does it work to SELECT name from nba player data?
     request = MySqliteRequest()
-    request = request.fr0m('nba_player_data.csv')
-    request = request.select("name")
+    request = request.FROM('nba_player_data.csv')
+    request = request.SELECT("name")
     request.run()
 
 def q01(): #Part I - Does it work to select name from nba player data with a where?
     request = MySqliteRequest()
-    request = request.fr0m('nba_player_data.csv')
-    request = request.select('name')
+    request = request.FROM('nba_player_data.csv')
+    request = request.SELECT('name')
     request = request.where('college', 'University of California')
     request.run()
 
-def q02(): #Part I - Does it work to select name from nba player data with multiple where?
+def q02(): #Part I - Does it work to SELECT name from nba player data with multiple where?
     request = MySqliteRequest()
-    request = request.fr0m('nba_player_data.csv')
-    request = request.select('name')
+    request = request.FROM('nba_player_data.csv')
+    request = request.SELECT('name')
     request = request.where('college', 'University of California')
     request = request.where('year_start', '1997')
     request.run()
@@ -45,7 +45,7 @@ def q04(): #Part I - Does it work to update a nba player?
 def q05(): #Part I - Does it work to delete a nba player?
     request = MySqliteRequest()
     request = request.delete()
-    request = request.fr0m('nba_player_data.csv')
+    request = request.FROM('nba_player_data.csv')
     request = request.where('name', 'Alaa Abdelnaby')
     request.run()
 

@@ -11,7 +11,7 @@ nba_player = "nba_players.csv"
 test_class = MySqliteRequest()
 test_class_B = MySqliteRequest()
 #testing from
-test_class.fr0m(nba_player_data)
+test_class.FROM(nba_player_data)
 
 #Testing join command
 # def __join__(self, other, column_on_db_a, filename_db_b, column_on_db_b):

@@ -45,7 +45,9 @@ def main():
     while (user_input != "quit"):
         command_list = cli.parse_prompt(user_input, request_object)
         cli.run_commands(command_list, request_object)
+        request_object = MySqliteRequest()
         user_input = cli.print_prompt()
+
 
 if __name__ == "__main__":
     main()
