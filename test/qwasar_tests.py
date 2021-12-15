@@ -52,15 +52,20 @@ def q05(): #Part I - Does it work to delete a nba player?
     request = request.where('name', 'Alaa Abdelnaby')
     request.run()
 
-# def q06(): #Part II - Can you run this request in the CLI?
+# def q06(): #Part II -  Mysqlite cli simple select
+#     SELECT * FROM nba_player_data.csv
 
-# def q07(): #Part II - Can you run this request in the CLI?
+# def q07(): #Part II - Mysqlite cli select specific field with where
+    # SELECT name,college FROM nba_player_data.csv WHERE college = 'University of California'
 
-# def q08(): #Part II - Can you run this request in the CLI?
+# def q08(): #Part II - Mysqlite cli simple insert
+#     INSERT INTO nba_player_data.csv VALUES ('Alaa Abdelnaby', '1991', '1995', 'F-C', '6-10', '240', 'June 24, 1968', 'Duke University')
 
-# def q09(): #Part II - Can you run this request in the CLI?
+# def q09(): #Part II -  Mysqlite cli simple update
+#     UPDATE nba_player_data.csv SET name = 'bob', college = 'South Hampton Institute of Technology' WHERE position = 'C'
 
-# def q10(): #Part II - Can you run this request in the CLI?
+# def q10(): #Part II - Mysqlite cli simple delete
+#     DELETE FROM nba_player_data.csv WHERE name = 'Matt Zunic'
 
 
 def main():
