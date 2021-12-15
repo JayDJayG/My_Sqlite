@@ -36,7 +36,7 @@ class CLI:
         for row in command_list:
             if row[0] == 'FROM': ##from [from, table_name]
                 formatted_command_list.append([row[0], row[1]])
-            elif row[0] == 'WHERE': #WHERE [WHERE, [column_name, criteria]]
+            elif row[0] == 'WHERE': #WHERE [WHERE, column_name, criteria]
                 new_row = [row[0], row[1]]
                 row.remove('=')
                 end_of_row = ' '.join(row[2:])
@@ -48,6 +48,18 @@ class CLI:
                 formatted_command_list.append(new_row)
             elif row[0] == 'SELECT': #select [select, [string_s]]
                 formatted_command_list.append([row[0], row[1:]])
+            elif row[0] == 'ORDER': #ORDER [ORDER, order, column_name]
+                command = row.pop(0)
+                new_row = [command]
+                for i in range(1, len(row)):
+                    if row[i].lower() == 'asc' or row[i].lower() == 'desc':
+                        order = row.pop(i)
+                        new_row.append(order)
+                        print(f"row = {row}")
+                new_row.append(row[0])
+                formatted_command_list.append(new_row)
+
+
 
             #functions that need formmatting for the input
                 #ORDER [ORDER, [order, column_name]]
