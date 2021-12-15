@@ -9,7 +9,6 @@ print(sys.path)
 from my_sqlite_request import MySqliteRequest
 
 
-
 nba_player_data = "nba_player_data.csv"
 nba_player = "nba_player.csv"
 

@@ -34,10 +34,22 @@ class CLI:
     def transform_command_list(self, command_list):
         formatted_command_list = []
         for row in command_list:
-            if row[0] = 'FROM'
+            if row[0] == 'FROM': ##from [from, table_name]
+                formatted_command_list.append([row[0], row[1]])
+            elif row[0] == 'WHERE': #WHERE [WHERE, [column_name, criteria]]
+                new_row = [row[0], row[1]]
+                row.remove('=')
+                end_of_row = ' '.join(row[2:])
+                try:
+                    end_of_row = end_of_row.replace("'","")
+                except ValueError as ex:
+                    pass
+                new_row.append(end_of_row)
+                formatted_command_list.append(new_row)
+            elif row[0] == 'SELECT': #select [select, [string_s]]
+                formatted_command_list.append([row[0], row[1:]])
+
             #functions that need formmatting for the input
-                ##from [from, table_name]
-                #WHERE [WHERE, [column_name, criteria]]
                 #ORDER [ORDER, [order, column_name]]
                 #join [join, [other, column_on_db_a, filename_db_b, column_on_db_b]]
                 #select [select, [string_s]]
@@ -45,18 +57,18 @@ class CLI:
                 #INSERT [INSERT, [table_name]]
                 #set [SET, dictionary values]
                 #DELETE [DELETE]
-        #return list of commands in format [COMMAND, load_dictionary_arguments]
+        # return list of commands in format [COMMAND, load_dictionary_arguments]
+        return formatted_command_list
         #transform command_list to go into my_sqlite_Request.load_dictionary
 
 
-    # def run_commands(self, command_list, request_object):
-    #     for idx, query in enumerate(command_list):
-    #         # print(query) #debug
-    #         try:
-    #             getattr(request_object, query[0])(*query[1:])
-    #         except TypeError:
-    #             getattr(request_object, query[0])(query[1:])
-    #     request_object.run()
+    def run_commands(self, formatted_command_list, request_object):
+        for idx, query in enumerate(formatted_command_list):
+            try:
+                getattr(request_object, query[0])(*query[1:])
+            except TypeError:
+                getattr(request_object, query[0])(query[1:])
+        request_object.run()
 
 def main():
     cli = CLI()
@@ -66,10 +78,9 @@ def main():
     while (user_input != "quit"):
         command_list = cli.parse_prompt(user_input, request_object)
         print(command_list)
-        # transformed_list = transform_command_list(command_list)
-        # MySqliteRequest.load_dictionary = transformed_list
-        # request_object.run()
-        # cli.run_commands(command_list, request_object)
+        formatted_command_list = cli.transform_command_list(command_list)
+        print(formatted_command_list)
+        cli.run_commands(formatted_command_list, request_object)
         request_object = MySqliteRequest()
         user_input = cli.print_prompt()
 
