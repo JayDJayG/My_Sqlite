@@ -55,19 +55,31 @@ class CLI:
                     if row[i].lower() == 'asc' or row[i].lower() == 'desc':
                         order = row.pop(i)
                         new_row.append(order)
-                        print(f"row = {row}")
-                new_row.append(row[0])
+                new_row.append(row.pop())
                 formatted_command_list.append(new_row)
+            elif row[0] == 'INSERT': #INSERT [INSERT, [table_name]]
+                command = row.pop(0)
+                new_row = [command]
+                for i in range(1, len(row)):
+                    if row[i].lower() == 'into':
+                        row.pop(i)
+                new_row.append(row.pop())
+                formatted_command_list.append(new_row)
+
+            #for VALUES, how can we determine the names of the columns? Without the names, we can't make the dictionary
+            # elif row[0] == 'VALUES': #VALUES [VALUES, dict{data}]
+            #     command = row.pop(0)
+            #     new_row = [command]
+            #     try:
+            #         end_of_row = end_of_row.replace("'","")
+            #     except ValueError as ex:
+            #         pass
 
 
 
             #functions that need formmatting for the input
-                #ORDER [ORDER, [order, column_name]]
                 #join [join, [other, column_on_db_a, filename_db_b, column_on_db_b]]
-                #select [select, [string_s]]
-                #VALUES [VALUES, dict{data}]
-                #INSERT [INSERT, [table_name]]
-                #set [SET, dictionary values]
+                #set [SET, dict{data}]
                 #DELETE [DELETE]
         # return list of commands in format [COMMAND, load_dictionary_arguments]
         return formatted_command_list
