@@ -65,8 +65,6 @@ class CLI:
                         row.pop(i)
                 new_row.append(row.pop())
                 formatted_command_list.append(new_row)
-
-            # for VALUES, how can we determine the names of the columns? Without the names, we can't make the dictionary
             elif row[0] == 'VALUES': #VALUES [VALUES, dict{data}]
                 command = row.pop(0)
                 new_row = [command]
@@ -83,30 +81,68 @@ class CLI:
                     elif found_item == True:
                         item = ''.join([item, char])
                 new_row.append(list_of_values)
-                # print(f"new_row = {new_row}") #debug
                 formatted_command_list.append(new_row)
+            elif row[0] == 'UPDATE': #UPDATE [UPDATE, table_name]
+                formatted_command_list.append([row[0], row[1]])
+            elif row[0] == 'SET': #SET [SET, dict{data}]
+                command = row.pop(0)
+                new_row = [command]
+                row_item_type = []
+                for index, item in enumerate(row):
+                    if item == '=':
+                        row_item_type[index - 1] = 'key'
+                        row_item_type.append('=')
+                    else:
+                        row_item_type.append('value')
+                print(f"row_item_type = {row_item_type}")
+                key_list = []
+                value_list = []
+                value = ""
+                index = 0
+                while index < len(row_item_type):
+                    if row_item_type[index] == 'key':
+                        key_list.append(row[index])
+                        index = index + 1
+                    elif row_item_type[index] == 'value':
+                        while ((index < len(row_item_type)) and (row_item_type[index] == 'value')):
+                            value = ' '.join([value, row[index]])
+                            index = index + 1
+                        value_list.append(value)
+                        value = ""
+                    else:
+                        index = index + 1
+                for index, item in enumerate(value_list):
+                    try:
+                        value_list[index] = value_list[index].replace(" '","")
+                    except ValueError as ex:
+                        pass
+                    try:
+                        value_list[index] = value_list[index].replace("'","")
+                    except ValueError as ex:
+                        pass                
+                set_dict = {}
+                for index in range(0, len(key_list)):
+                    set_dict[key_list[index]] = value_list[index]
+                new_row.append(set_dict)
+                formatted_command_list.append(new_row)
+
+
+
 
 
 
             #functions that need formmatting for the input
                 #join [join, [other, column_on_db_a, filename_db_b, column_on_db_b]]
-                #set [SET, dict{data}]
                 #DELETE [DELETE]
         # return list of commands in format [COMMAND, load_dictionary_arguments]
         return formatted_command_list
-        #transform command_list to go into my_sqlite_Request.load_dictionary
 
 
     def run_commands(self, formatted_command_list, request_object):
         for idx, query in enumerate(formatted_command_list):
-            # print(f"query = {query}") #debug
             try:
-                # print(f"query[0] = {query[0]}") #debug
-                # print(f"query[1:] = {query[1:]}") #debug
                 getattr(request_object, query[0])(*query[1:])
             except TypeError:
-                # print(f"query[0] = {query[0]}") #debug
-                # print(f"query[1:] = {query[1:]}") #debug
                 getattr(request_object, query[0])(query[1:])
         request_object.run()
 

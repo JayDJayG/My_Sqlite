@@ -210,7 +210,6 @@ class MySqliteRequest:
         An update request might be associated with a where request
         """
         # self.query_dictionary, self.run_dictionary = self.__from__(table_name)
-        self.table = table_name
         self.__from__(table_name)
         return self
         #update the query dictionary with the proper database
