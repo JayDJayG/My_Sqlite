@@ -342,15 +342,15 @@ class MySqliteRequest:
         self.load_dictionary["__from__"].append(table_name)
         return self
 
-    def where(self, column_name, criteria):
+    def WHERE(self, column_name, criteria):
         self.load_dictionary["__where__"].append([column_name, criteria])
         return self
 
-    def order(self, order, column_name):
+    def ORDER(self, order, column_name):
         # return self.__order__(order, column_name)
         self.load_dictionary["order"].append([order, column_name])
 
-    def join(self, other, column_on_db_a, filename_db_b, column_on_db_b):
+    def JOIN(self, other, column_on_db_a, filename_db_b, column_on_db_b):
         return self.__join__(other, column_on_db_a, filename_db_b,
                              column_on_db_b)
 
@@ -359,22 +359,22 @@ class MySqliteRequest:
         self.load_dictionary["__select__"].append(string_s)
         return self
 
-    def values(self, data):
+    def VALUES(self, data):
         self.load_dictionary["__values__"].append(data)
         return self
 
-    def insert(self, table_name):
+    def INSERT(self, table_name):
         self.load_dictionary["__insert__"].append(table_name)
         return self
 
-    def update(self, table_name):
+    def UPDATE(self, table_name):
         self.load_dictionary["__update__"].append(table_name)
         return self
     
-    def set(self, data):
+    def SET(self, data):
         self.load_dictionary["__set__"].append(data)
         return self
 
-    def delete(self):
+    def DELETE(self):
         self.load_dictionary["__delete__"].append("n/a")
         return self

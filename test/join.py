@@ -14,9 +14,9 @@ test_class_B = MySqliteRequest()
 test_class.FROM(nba_player_data)
 
 #Testing join command
-# def __join__(self, other, column_on_db_a, filename_db_b, column_on_db_b):
+# def __JOIN__(self, other, column_on_db_a, filename_db_b, column_on_db_b):
 
-test_class.join(test_class_B, "name", "nba_players.csv", "Player")
+test_class.JOIN(test_class_B, "name", "nba_players.csv", "Player")
 #test_class.run()
 #test_class.__repr__()
 

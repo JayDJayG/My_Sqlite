@@ -17,7 +17,7 @@ test_class.__select__(["name", "year_start", "position"])
 
 #print(test_class)
 
-test_class.order('asc', 'position')
+test_class.ORDER('asc', 'position')
 test_class.column_extractor()
 test_class.run()
 #test_class.__repr__()

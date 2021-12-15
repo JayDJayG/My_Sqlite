@@ -7,9 +7,9 @@ nba_player_data = "nba_player_data.csv"
 nba_player = "nba_player.csv"
 
 request = MySqliteRequest()
-request = request.delete()
+request = request.DELETE()
 request = request.__from__('nba_player_data.csv')
-request = request.where('name', 'Alaa Abdelnaby')
+request = request.WHERE('name', 'Alaa Abdelnaby')
 request.run()
 
 print(list(request.run_dictionary.keys())[-1] + 1)

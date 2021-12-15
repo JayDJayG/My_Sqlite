@@ -27,15 +27,36 @@ class CLI:
             else:
                 print("Error: unknown command or invalid arguments: " + user_input)
         return command_list
+        # command_list is a 2D list of functions and function arguments
+        # command_list[index of function][function name, argument0, argument1, etc]
 
-    def run_commands(self, command_list, request_object):
-        for idx, query in enumerate(command_list):
-            # print(query) #debug
-            try:
-                getattr(request_object, query[0])(*query[1:])
-            except TypeError:
-                getattr(request_object, query[0])(query[1:])
-        request_object.run()
+
+    def transform_command_list(self, command_list):
+        formatted_command_list = []
+        for row in command_list:
+            if row[0] = 'FROM'
+            #functions that need formmatting for the input
+                ##from [from, table_name]
+                #WHERE [WHERE, [column_name, criteria]]
+                #ORDER [ORDER, [order, column_name]]
+                #join [join, [other, column_on_db_a, filename_db_b, column_on_db_b]]
+                #select [select, [string_s]]
+                #VALUES [VALUES, dict{data}]
+                #INSERT [INSERT, [table_name]]
+                #set [SET, dictionary values]
+                #DELETE [DELETE]
+        #return list of commands in format [COMMAND, load_dictionary_arguments]
+        #transform command_list to go into my_sqlite_Request.load_dictionary
+
+
+    # def run_commands(self, command_list, request_object):
+    #     for idx, query in enumerate(command_list):
+    #         # print(query) #debug
+    #         try:
+    #             getattr(request_object, query[0])(*query[1:])
+    #         except TypeError:
+    #             getattr(request_object, query[0])(query[1:])
+    #     request_object.run()
 
 def main():
     cli = CLI()
@@ -44,7 +65,11 @@ def main():
     user_input = cli.print_prompt()
     while (user_input != "quit"):
         command_list = cli.parse_prompt(user_input, request_object)
-        cli.run_commands(command_list, request_object)
+        print(command_list)
+        # transformed_list = transform_command_list(command_list)
+        # MySqliteRequest.load_dictionary = transformed_list
+        # request_object.run()
+        # cli.run_commands(command_list, request_object)
         request_object = MySqliteRequest()
         user_input = cli.print_prompt()
 
