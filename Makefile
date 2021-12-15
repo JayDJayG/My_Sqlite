@@ -11,7 +11,7 @@ all:
 
 run: $(VENV)/bin/activate
 	$(PYTHON) test/qwasar_tests.py
-
+	
 
 $(VENV)/bin/activate: requirements.txt
 	python3 -m venv $(VENV)
