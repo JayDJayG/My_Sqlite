@@ -1,3 +1,4 @@
+import os
 from numpy import where
 import pandas as pd
 from os.path import exists
@@ -12,7 +13,7 @@ class MySqliteRequest:
         self.run_dictionary = {}
         self.query_dictionary = {}
         self.columns_extracted = []
-        self.data_location = '../data/'
+        self.data_location = os.path.dirname(__file__)[:-9] + 'data/'
         self.table = ""
         self.from_usage = False
         self.delete_flag = False
@@ -66,8 +67,8 @@ class MySqliteRequest:
         It takes as the parameter a string OR an array of strings.
         It will continue to build the request. During the run()
         """
-        if self.from_usage:
 
+        if self.from_usage:
             if not isinstance(string_s, list):  #convert string to list
                 s = string_s
                 string_s = list()
