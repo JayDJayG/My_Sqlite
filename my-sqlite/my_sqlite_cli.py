@@ -66,14 +66,25 @@ class CLI:
                 new_row.append(row.pop())
                 formatted_command_list.append(new_row)
 
-            #for VALUES, how can we determine the names of the columns? Without the names, we can't make the dictionary
-            # elif row[0] == 'VALUES': #VALUES [VALUES, dict{data}]
-            #     command = row.pop(0)
-            #     new_row = [command]
-            #     try:
-            #         end_of_row = end_of_row.replace("'","")
-            #     except ValueError as ex:
-            #         pass
+            # for VALUES, how can we determine the names of the columns? Without the names, we can't make the dictionary
+            elif row[0] == 'VALUES': #VALUES [VALUES, dict{data}]
+                command = row.pop(0)
+                new_row = [command]
+                row_str = ' '.join(row)
+                found_item = False
+                item = ""
+                list_of_values = []
+                for index, char in enumerate(row_str):
+                    if char == "'":
+                        found_item = not found_item
+                        if len(item) > 0:
+                            list_of_values.append(item)
+                            item = ""
+                    elif found_item == True:
+                        item = ''.join([item, char])
+                new_row.append(list_of_values)
+                # print(f"new_row = {new_row}") #debug
+                formatted_command_list.append(new_row)
 
 
 
@@ -88,9 +99,14 @@ class CLI:
 
     def run_commands(self, formatted_command_list, request_object):
         for idx, query in enumerate(formatted_command_list):
+            # print(f"query = {query}") #debug
             try:
+                # print(f"query[0] = {query[0]}") #debug
+                # print(f"query[1:] = {query[1:]}") #debug
                 getattr(request_object, query[0])(*query[1:])
             except TypeError:
+                # print(f"query[0] = {query[0]}") #debug
+                # print(f"query[1:] = {query[1:]}") #debug
                 getattr(request_object, query[0])(query[1:])
         request_object.run()
 
@@ -101,9 +117,9 @@ def main():
     user_input = cli.print_prompt()
     while (user_input != "quit"):
         command_list = cli.parse_prompt(user_input, request_object)
-        print(command_list)
+        print(f"command_list = {command_list}") #debug
         formatted_command_list = cli.transform_command_list(command_list)
-        print(formatted_command_list)
+        print(f"formatted_command_list = {formatted_command_list}") #debug
         cli.run_commands(formatted_command_list, request_object)
         request_object = MySqliteRequest()
         user_input = cli.print_prompt()

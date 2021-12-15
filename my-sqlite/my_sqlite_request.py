@@ -167,8 +167,6 @@ class MySqliteRequest:
         Insert Implement a method to insert which will receive a table name (filename).
         It will continue to build the request.
         """
-        self.table = table_name
-        self = self.__from__(table_name)
         length = len(self.query_dictionary)
         self.query_dictionary[length] = {}
         for item in self.values_li:
@@ -179,7 +177,6 @@ class MySqliteRequest:
 
         # #update csv file from new query dictionary
         df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
-        # print(df) #debug
         df.to_csv(f"{self.data_location}/{self.table}", index=False)
 
         return self
@@ -191,12 +188,17 @@ class MySqliteRequest:
         (a hash of data on format (key => value)).
         It will continue to build the request. During the run() you do the insert.
         """
+        value_dict = {}
         if type(data) == dict:
             data = [data]
         if type(data) == list:
-            for kv in data:
+            for index, kv in enumerate(data):
                 if type(kv) == dict:
                     self.values_li.append(kv)
+                else:
+                    value_dict[self.columns[index]] = kv
+                    self.values_li.append(value_dict)
+                    value_dict = {}
         else:
             print("Right data format [{'name':'Gaetan'},{'lastname':'Juvin'}]")
         return self
@@ -210,7 +212,6 @@ class MySqliteRequest:
         # self.query_dictionary, self.run_dictionary = self.__from__(table_name)
         self.table = table_name
         self.__from__(table_name)
-        # print(self.query_dictionary) #debug
         return self
         #update the query dictionary with the proper database
 
@@ -221,7 +222,6 @@ class MySqliteRequest:
         It will perform the update of attributes on all matching row.
         An update request might be associated with a where request.
         """
-        # print(self.query_dictionary) #debug
 
         #update run dictionary with new values
         for key in data.keys():
@@ -230,7 +230,6 @@ class MySqliteRequest:
                     continue
                 else:
                     self.run_dictionary[idx][key] = data[key]
-        # print(f"self.run_dictionary = {self.run_dictionary}") #debug
 
         #update query dictionary from run dictionary
         for idx in self.run_dictionary:
@@ -242,7 +241,6 @@ class MySqliteRequest:
         self.run_dictionary = self.query_dictionary.copy()
         # #update csv file from new query dictionary
         df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
-        # print(df) #debug
         df.to_csv(f"{self.data_location}/{self.table}", index=False)
 
         #for any update block, the logic is as follows:
@@ -268,14 +266,12 @@ class MySqliteRequest:
 
         # #update csv file from new query dictionary
         df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary if value )
-        # print(df) #debug
         df.to_csv(f"{self.data_location}/{self.table}", index=False)
         return self
 
     def __load__(self):
         for key in self.load_dictionary.keys():
             for args in self.load_dictionary[key]:
-                # print(key, args) #debug
                 try:
                     getattr(self, key)(*args)
                 except TypeError:
@@ -364,6 +360,7 @@ class MySqliteRequest:
         return self
 
     def INSERT(self, table_name):
+        self.FROM(table_name)
         self.load_dictionary["__insert__"].append(table_name)
         return self
 
