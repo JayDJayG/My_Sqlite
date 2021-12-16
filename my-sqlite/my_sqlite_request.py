@@ -115,10 +115,10 @@ class MySqliteRequest:
         and will join both database on an on column.
         """
         if (not self.run_dictionary):
-            self.run_dictionary = self.query_dictionary
+            self.run_dictionary = self.query_dictionary.copy()
 
         db_B = MySqliteRequest()
-        db_B.FROM(filename_db_b)
+        db_B.__from__(filename_db_b)
         li_B = db_B.column_dict_list_extractor(column_on_db_b)
 
         if (li_B):
@@ -131,7 +131,7 @@ class MySqliteRequest:
                     self.run_dictionary[idx].pop('Unnamed: 0', None)
         else:
             print("Join failed")
-
+            
         return self
 
     def __order__(self, order, column_name):
@@ -349,11 +349,10 @@ class MySqliteRequest:
         self.load_dictionary["__order__"].append([order, column_name])
 
     def JOIN(self, column_on_db_a, filename_db_b, column_on_db_b):
-        return self.__join__(column_on_db_a, filename_db_b,
-                             column_on_db_b)
+        self.load_dictionary["__join__"].append([column_on_db_a, filename_db_b, column_on_db_b])
+        return self
 
     def SELECT(self, string_s):
-        # return self.__select__(string_s)
         self.load_dictionary["__select__"].append(string_s)
         return self
 

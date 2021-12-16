@@ -4,7 +4,7 @@ import pathlib
 dirname = str(pathlib.Path(__file__).resolve().parent.parent.joinpath('my-sqlite'))
 # dirname = os.path.dirname(__file__)[:-4] + "my-sqlite"
 sys.path.insert(0, dirname)
-print(sys.path)
+# print(sys.path) #debug
 
 from my_sqlite_request import MySqliteRequest
 
