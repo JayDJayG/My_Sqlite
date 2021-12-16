@@ -140,9 +140,6 @@ class CLI:
 
     def run_commands(self, formatted_command_list, request_object):
         for idx, query in enumerate(formatted_command_list):
-            print(f"query = {query}") #debug
-            print(f"query = {query[0]}") #debug
-            print(f"query = {query[1:]}") #debug
             try:
                 getattr(request_object, query[0])(*query[1:])
             except TypeError:

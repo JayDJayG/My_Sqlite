@@ -109,7 +109,7 @@ class MySqliteRequest:
             print(self.from_message)
         return self
 
-    def __join__(self, other, column_on_db_a, filename_db_b, column_on_db_b):
+    def __join__(self, column_on_db_a, filename_db_b, column_on_db_b):
         """
         The join_ method loads another filename_db
         and will join both database on an on column.
@@ -349,7 +349,7 @@ class MySqliteRequest:
         self.load_dictionary["__order__"].append([order, column_name])
 
     def JOIN(self, other, column_on_db_a, filename_db_b, column_on_db_b):
-        return self.__join__(other, column_on_db_a, filename_db_b,
+        return self.__join__(column_on_db_a, filename_db_b,
                              column_on_db_b)
 
     def SELECT(self, string_s):
