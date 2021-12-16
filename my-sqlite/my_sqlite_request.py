@@ -264,7 +264,7 @@ class MySqliteRequest:
         self.run_dictionary = self.query_dictionary.copy()
 
         # #update csv file from new query dictionary
-        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary if value )
+        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary if value)
         df.to_csv(f"{self.data_location}/{self.table}", index=False)
         return self
 

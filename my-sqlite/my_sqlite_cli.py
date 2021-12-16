@@ -125,21 +125,24 @@ class CLI:
                     set_dict[key_list[index]] = value_list[index]
                 new_row.append(set_dict)
                 formatted_command_list.append(new_row)
-
-
+            elif row[0] == 'DELETE': #DELETE [DELETE]
+                formatted_command_list.append([row[0]])
 
 
 
 
             #functions that need formmatting for the input
                 #join [join, [other, column_on_db_a, filename_db_b, column_on_db_b]]
-                #DELETE [DELETE]
+                
         # return list of commands in format [COMMAND, load_dictionary_arguments]
         return formatted_command_list
 
 
     def run_commands(self, formatted_command_list, request_object):
         for idx, query in enumerate(formatted_command_list):
+            print(f"query = {query}") #debug
+            print(f"query = {query[0]}") #debug
+            print(f"query = {query[1:]}") #debug
             try:
                 getattr(request_object, query[0])(*query[1:])
             except TypeError:
