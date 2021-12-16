@@ -348,7 +348,7 @@ class MySqliteRequest:
         # return self.__order__(order, column_name)
         self.load_dictionary["__order__"].append([order, column_name])
 
-    def JOIN(self, other, column_on_db_a, filename_db_b, column_on_db_b):
+    def JOIN(self, column_on_db_a, filename_db_b, column_on_db_b):
         return self.__join__(column_on_db_a, filename_db_b,
                              column_on_db_b)
 
