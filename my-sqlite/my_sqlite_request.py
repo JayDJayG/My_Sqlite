@@ -38,18 +38,20 @@ class MySqliteRequest:
 
     def __from__(self, table_name):
         """
-        from_ implements the sql FROM command, each request must have one.
-        from_ will take a string(table_name) this is the name of the csv file to query.
+        __from__ implements the sql FROM command, each request must have an implicit one,
+        by either calling FROM or a clear name for the db that would be the query target.
+        __from__ will take a string(table_name) this is the name of the csv file to query.
         """
         self.table = table_name
         csv_path = self.data_location + table_name  #create path
         if (exists(csv_path)):  #check file existence
             df = pd.read_csv(csv_path, sep=',')
-            df = df.fillna("null")
+            df = df.fillna("null")  #changes nill to "null"
             df = df.astype(str)
             tuples = [tuple(x) for x in df.values]
             self.columns = list(df.columns)
 
+            #Loads the dictionary with the extracted data in a tuple
             for idx, val in enumerate(tuples):
                 self.query_dictionary[idx] = {}
                 for jdx, value in enumerate(val):
@@ -70,9 +72,7 @@ class MySqliteRequest:
 
         if self.from_usage:
             if not isinstance(string_s, list):  #convert string to list
-                s = string_s
-                string_s = list()
-                string_s.append(s)
+                string_s = self.str_to_list(string_s)
 
             column_bool = True
             if string_s[0] == '*':
@@ -98,7 +98,9 @@ class MySqliteRequest:
         """
         if self.from_usage == True and column_name in self.columns:
             for entry in self.query_dictionary:
-                if ((self.delete_flag == False) and (self.query_dictionary[entry]) and (criteria != self.query_dictionary[entry][column_name])):
+                if ((self.delete_flag == False)
+                        and (self.query_dictionary[entry]) and
+                    (criteria != self.query_dictionary[entry][column_name])):
                     #everything that isn't matching the criteria becomes none
                     self.run_dictionary[entry] = None
 
@@ -131,7 +133,7 @@ class MySqliteRequest:
                     self.run_dictionary[idx].pop('Unnamed: 0', None)
         else:
             print("Join failed")
-            
+
         return self
 
     def __order__(self, order, column_name):
@@ -176,7 +178,8 @@ class MySqliteRequest:
         self.run_dictionary = self.query_dictionary.copy()
 
         # #update csv file from new query dictionary
-        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
+        df = pd.DataFrame(self.query_dictionary[value]
+                          for value in self.query_dictionary)
         df.to_csv(f"{self.data_location}/{self.table}", index=False)
 
         return self
@@ -206,6 +209,7 @@ class MySqliteRequest:
     def __update__(self, table_name):
         """
         Update Implement a method to update which will receive a table name (filename).
+        This is an implicit FROM method.
         It will continue to build the request.
         An update request might be associated with a where request
         """
@@ -236,10 +240,12 @@ class MySqliteRequest:
                 continue
             else:
                 for key in self.run_dictionary[idx]:
-                    self.query_dictionary[idx][key] = self.run_dictionary[idx][key]
+                    self.query_dictionary[idx][key] = self.run_dictionary[idx][
+                        key]
         self.run_dictionary = self.query_dictionary.copy()
         # #update csv file from new query dictionary
-        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary)
+        df = pd.DataFrame(self.query_dictionary[value]
+                          for value in self.query_dictionary)
         df.to_csv(f"{self.data_location}/{self.table}", index=False)
 
         #for any update block, the logic is as follows:
@@ -265,9 +271,12 @@ class MySqliteRequest:
 
         # print(f"self.query_dictionary = {self.query_dictionary}") #debug
         # #update csv file from new query dictionary
-        x = (self.query_dictionary[value] for value in self.query_dictionary if value != None)
-        print(*x) #debug
-        df = pd.DataFrame(self.query_dictionary[value] for value in self.query_dictionary if self.query_dictionary[value] != None)
+        x = (self.query_dictionary[value] for value in self.query_dictionary
+             if value != None)
+        print(*x)  #debug
+        df = pd.DataFrame(self.query_dictionary[value]
+                          for value in self.query_dictionary
+                          if self.query_dictionary[value] != None)
         df.to_csv(f"{self.data_location}/{self.table}", index=False)
         return self
 
@@ -298,7 +307,7 @@ class MySqliteRequest:
                         continue
                 print(row)
 
-    #Helper Functions
+    #Helper Functions Zone
     def run_value(self):
         print(self.columns)
         for d in self.values_li:
@@ -329,6 +338,11 @@ class MySqliteRequest:
             li[self.query_dictionary[idx][column_on_db]] = idx
         return li
 
+    def str_to_list(self, str):
+        li = list()
+        li.append(str)
+        return li
+
     #End Helper Function
 
     def run(self):
@@ -349,7 +363,8 @@ class MySqliteRequest:
         self.load_dictionary["__order__"].append([order, column_name])
 
     def JOIN(self, column_on_db_a, filename_db_b, column_on_db_b):
-        self.load_dictionary["__join__"].append([column_on_db_a, filename_db_b, column_on_db_b])
+        self.load_dictionary["__join__"].append(
+            [column_on_db_a, filename_db_b, column_on_db_b])
         return self
 
     def SELECT(self, string_s):
@@ -368,7 +383,7 @@ class MySqliteRequest:
     def UPDATE(self, table_name):
         self.load_dictionary["__update__"].append(table_name)
         return self
-    
+
     def SET(self, data):
         self.load_dictionary["__set__"].append(data)
         return self

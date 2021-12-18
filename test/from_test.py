@@ -1,14 +1,17 @@
-# import sys
-# sys.path.insert(0, '../my-sqlite')
-# from my_sqlite_request import MySqliteRequest
+import sys
 
-# nba_player_data = "nba_player_data.csv"
-# nba_player = "nba_player.csv"
+sys.path.insert(0, '../my-sqlite')
+from my_sqlite_request import MySqliteRequest
 
-# #Instance of MySqliteRequest class
-# test_class = MySqliteRequest()
+nba_player_data = "nba_player_data.csv"
+nba_player = "nba_player.csv"
 
-# #testing from
-# ##test_class.from_(nba_player_data)
+#Instance of MySqliteRequest class
+test_class = MySqliteRequest()
 
-# print(test_class.query_dictionary[1]["year_start"])
+#testing from
+test_class = test_class.FROM(nba_player_data)
+
+test_class = test_class.SELECT("name")
+
+test_class.run()
