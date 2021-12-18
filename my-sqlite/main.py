@@ -1,4 +1,3 @@
-import my_sqlite_request
 import my_sqlite_cli
 
 # Defining main function

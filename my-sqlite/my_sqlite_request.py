@@ -269,11 +269,9 @@ class MySqliteRequest:
                     self.query_dictionary[idx] = None
         self.run_dictionary = self.query_dictionary.copy()
 
-        # print(f"self.query_dictionary = {self.query_dictionary}") #debug
         # #update csv file from new query dictionary
         x = (self.query_dictionary[value] for value in self.query_dictionary
              if value != None)
-        print(*x)  #debug
         df = pd.DataFrame(self.query_dictionary[value]
                           for value in self.query_dictionary
                           if self.query_dictionary[value] != None)
@@ -294,9 +292,6 @@ class MySqliteRequest:
         """
         if (len(self.run_dictionary.keys()) == 0):
             self.run_dictionary = self.query_dictionary.copy()
-        #complete self.run
-        # self.run_value()
-        #UNCOMMENT
         for idx in self.run_dictionary:
             row = ""
             if self.run_dictionary[idx]:
@@ -306,14 +301,6 @@ class MySqliteRequest:
                     except TypeError:
                         continue
                 print(row)
-
-    #Helper Functions Zone
-    def run_value(self):
-        print(self.columns)
-        for d in self.values_li:
-            for key, value in d.items():
-                print(key)
-                print(value)
 
     def column_extractor(self):
         """
@@ -350,7 +337,6 @@ class MySqliteRequest:
         return self.__run__()
 
     def FROM(self, table_name):
-        # return self.__from__(table_name)
         self.load_dictionary["__from__"].append(table_name)
         return self
 
@@ -359,7 +345,6 @@ class MySqliteRequest:
         return self
 
     def ORDER(self, order, column_name):
-        # return self.__order__(order, column_name)
         self.load_dictionary["__order__"].append([order, column_name])
 
     def JOIN(self, column_on_db_a, filename_db_b, column_on_db_b):
