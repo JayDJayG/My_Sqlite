@@ -24,9 +24,17 @@ This project was built using:
 
 ## Setup
 
-To run this project use the command make:
+To install all the libraries and setup the python3 env:
 
 $>make
+
+To run the CLI use this make command:
+
+$>make cli
+
+If you would like to revert any change to the csv files:
+
+$>make reset_db
 
 ## Prerequisites
 

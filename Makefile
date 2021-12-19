@@ -13,6 +13,13 @@ all:
 	git stash -- $(DB0)
 	git stash -- $(DB1)
 
+cli:
+	$(PYTHON) my-sqlite/my_sqlite_cli.py
+
+reset_db:
+	git stash -- $(DB0)
+	git stash -- $(DB1)
+
 test: env
 	$(PYTHON) test/qwasar_tests.py
 
@@ -22,4 +29,4 @@ env: requirements.txt
 
 clean:
 	rm -rf __pycache__
-	rm -rf $(VENV)
+	rm -rf $(VENV)	
