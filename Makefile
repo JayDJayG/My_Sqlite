@@ -10,15 +10,15 @@ DB1 = data/nba_player_data.csv
 all: 
 	make clean
 	make test
-	git stash -- $(DB0)
-	git stash -- $(DB1)
+	git restore $(DB0)
+	git restore $(DB1)
 
 cli:
 	$(PYTHON) my-sqlite/my_sqlite_cli.py
 
 reset_db:
-	git stash -- $(DB0)
-	git stash -- $(DB1)
+	git restore $(DB0)
+	git restore $(DB1)
 
 test: env
 	$(PYTHON) test/qwasar_tests.py
