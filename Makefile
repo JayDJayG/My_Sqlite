@@ -3,15 +3,18 @@
 VENV = venv
 PYTHON = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
+DB0 = data/nba_players.csv
+DB1 = data/nba_player_data.csv
 
 .PHONY: all
 all: 
 	make clean
-	make run
+	make test
+	git stash -- $(DB0)
+	git stash -- $(DB1)
 
-run: env
+test: env
 	$(PYTHON) test/qwasar_tests.py
-	
 
 env: requirements.txt
 	python3 -m venv $(VENV)
