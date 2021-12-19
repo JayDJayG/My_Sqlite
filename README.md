@@ -7,7 +7,7 @@
 
 ## General info
 
-My-sqlite program works as a functional SQL engine and CLI, implementing the following SQL commands:
+My-sqlite program works as a functional SQL engine and CLI, with the following SQL commands built-in:
 
 UPDATE, VALUES, INSERT, ORDER, SELECT, WHERE, DELETE, SET, and JOIN.
 
@@ -17,17 +17,17 @@ The My-sqlite CLI is implemented in my_sqlite_cli.py within the CLI class.
 Altogether serves the purpose to query, update, delete, and in general manipulate csv files that function as databases.
 ## Technologies
 
-Built with LOVE and the use of:
-Python 3.9.9
-pandas >= 1.2.4
-pytest >= 6.2.5
+This project was built using:
+* Python 3.9.9
+* pandas >= 1.2.4
+* pytest >= 6.2.5
 
 ## Setup
 
-To run this project use make:
+To run this project use the command make:
 
 $>make
 
 ## Prerequisites
 
-Please make sure you have installed Python3 and pip installed on your computer.
+Please make sure you have Python3 and pip installed on your computer.
